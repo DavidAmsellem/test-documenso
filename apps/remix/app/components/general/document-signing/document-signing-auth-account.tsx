@@ -4,6 +4,7 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { RecipientRole } from '@prisma/client';
 
 import { authClient } from '@documenso/auth/client';
+import { type TRecipientActionAuth } from '@documenso/lib/types/document-auth';
 import { Alert, AlertDescription } from '@documenso/ui/primitives/alert';
 import { Button } from '@documenso/ui/primitives/button';
 import { DialogFooter } from '@documenso/ui/primitives/dialog';
@@ -14,13 +15,17 @@ import { useRequiredDocumentSigningAuthContext } from './document-signing-auth-p
 export type DocumentSigningAuthAccountProps = {
   actionTarget?: 'FIELD' | 'DOCUMENT';
   actionVerb?: string;
+  open: boolean;
   onOpenChange: (value: boolean) => void;
+  onReauthFormSubmit: (values?: TRecipientActionAuth) => Promise<void> | void;
 };
 
 export const DocumentSigningAuthAccount = ({
   actionTarget = 'FIELD',
   actionVerb = 'sign',
+  open: _open,
   onOpenChange,
+  onReauthFormSubmit: _onReauthFormSubmit,
 }: DocumentSigningAuthAccountProps) => {
   const { recipient } = useRequiredDocumentSigningAuthContext();
 

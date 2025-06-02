@@ -106,7 +106,7 @@ msgstr "{0, plural, one {1 Recipient} other {# Recipients}}"
 msgid "{0, plural, one {Waiting on 1 recipient} other {Waiting on # recipients}}"
 msgstr "{0, plural, one {Waiting on 1 recipient} other {Waiting on # recipients}}"
 
-#. placeholder {0}: _(FRIENDLY_FIELD_TYPE[fieldType as FieldType])
+#. placeholder {0}: fieldType && _(FRIENDLY_FIELD_TYPE[fieldType])
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
 msgid "{0}"
 msgstr "{0}"
@@ -466,6 +466,11 @@ msgstr "<0>Require account</0> - The recipient must be signed in to view the doc
 #: packages/ui/components/document/document-global-auth-action-select.tsx
 msgid "<0>Require passkey</0> - The recipient must have an account and passkey configured via their settings"
 msgstr "<0>Require passkey</0> - The recipient must have an account and passkey configured via their settings"
+
+#: packages/ui/components/recipient/recipient-action-auth-select.tsx
+#: packages/ui/components/document/document-global-auth-action-select.tsx
+msgid "<0>Require SMS</0> - The recipient must provide a phone number and verify it via SMS before signing"
+msgstr "<0>Require SMS</0> - The recipient must provide a phone number and verify it via SMS before signing"
 
 #: apps/remix/app/components/tables/documents-table-sender-filter.tsx
 msgid "<0>Sender:</0> All"
@@ -1321,6 +1326,7 @@ msgid "Authentication Level"
 msgstr "Authentication Level"
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-page.tsx
+#: apps/remix/app/components/general/document-signing/document-signing-auth-dialog.tsx
 #: apps/remix/app/components/general/direct-template/direct-template-signing-auth-page.tsx
 msgid "Authentication required"
 msgstr "Authentication required"
@@ -4477,10 +4483,6 @@ msgstr "Reason for rejection: {rejectionReason}"
 msgid "Reason must be less than 500 characters"
 msgstr "Reason must be less than 500 characters"
 
-#: apps/remix/app/components/general/document-signing/document-signing-auth-dialog.tsx
-msgid "Reauthentication is required to sign this field"
-msgstr "Reauthentication is required to sign this field"
-
 #: packages/ui/components/recipient/recipient-role-select.tsx
 msgid "Receives copy"
 msgstr "Receives copy"
@@ -5058,10 +5060,6 @@ msgstr "Sign document"
 msgid "Sign Document"
 msgstr "Sign Document"
 
-#: apps/remix/app/components/general/document-signing/document-signing-auth-dialog.tsx
-msgid "Sign field"
-msgstr "Sign field"
-
 #: apps/remix/app/components/forms/signup.tsx
 msgid "Sign Here"
 msgstr "Sign Here"
@@ -5221,6 +5219,10 @@ msgstr "Site Banner"
 #: apps/remix/app/routes/_authenticated+/admin+/_layout.tsx
 msgid "Site Settings"
 msgstr "Site Settings"
+
+#: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
+msgid "SMS Re-Authentication"
+msgstr "SMS Re-Authentication"
 
 #: packages/ui/primitives/document-flow/missing-signature-field-dialog.tsx
 msgid "Some signers have not been assigned a signature field. Please assign at least 1 signature field to each signer before proceeding."

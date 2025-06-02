@@ -30,7 +30,7 @@ import { DocumentSigningDisclosure } from '~/components/general/document-signing
 import { useRequiredDocumentSigningAuthContext } from './document-signing-auth-provider';
 import { useRequiredDocumentSigningContext } from './document-signing-provider';
 
-const AUTO_SIGNABLE_FIELD_TYPES: string[] = [
+const AUTO_SIGNABLE_FIELD_TYPES: FieldType[] = [
   FieldType.NAME,
   FieldType.INITIALS,
   FieldType.EMAIL,
@@ -120,7 +120,7 @@ export const DocumentSigningAutoSign = ({ recipient, fields }: DocumentSigningAu
           }))
           .with(null, () => undefined)
           .with(
-            P.union(DocumentAuth.PASSKEY, DocumentAuth.TWO_FACTOR_AUTH),
+            P.union(DocumentAuth.PASSKEY, DocumentAuth.TWO_FACTOR_AUTH, DocumentAuth.SMS),
             // This is a bit dirty, but the sentinel value used here is incredibly short-lived.
             () => 'NOT_SUPPORTED' as const,
           )

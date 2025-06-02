@@ -111,7 +111,7 @@ msgstr "{0, plural, one {1 odbiorca} few {# odbiorców} many {# odbiorców} othe
 msgid "{0, plural, one {Waiting on 1 recipient} other {Waiting on # recipients}}"
 msgstr "{0, plural, one {Czekam na 1 odbiorcę} few {Czekam na # odbiorców} many {Czekam na # odbiorców} other {Czekam na # odbiorców}}"
 
-#. placeholder {0}: _(FRIENDLY_FIELD_TYPE[fieldType as FieldType])
+#. placeholder {0}: fieldType && _(FRIENDLY_FIELD_TYPE[fieldType])
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
 msgid "{0}"
 msgstr "{0}"
@@ -471,6 +471,11 @@ msgstr "<0>Wymagana konto</0> - Odbiorca musi być zalogowany, aby wyświetlić 
 #: packages/ui/components/document/document-global-auth-action-select.tsx
 msgid "<0>Require passkey</0> - The recipient must have an account and passkey configured via their settings"
 msgstr "<0>Wymagana passkey</0> - Odbiorca musi mieć konto i skonfigurowaną passkey w swoich ustawieniach"
+
+#: packages/ui/components/recipient/recipient-action-auth-select.tsx
+#: packages/ui/components/document/document-global-auth-action-select.tsx
+msgid "<0>Require SMS</0> - The recipient must provide a phone number and verify it via SMS before signing"
+msgstr ""
 
 #: apps/remix/app/components/tables/documents-table-sender-filter.tsx
 msgid "<0>Sender:</0> All"
@@ -1326,6 +1331,7 @@ msgid "Authentication Level"
 msgstr "Poziom autoryzacji"
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-page.tsx
+#: apps/remix/app/components/general/document-signing/document-signing-auth-dialog.tsx
 #: apps/remix/app/components/general/direct-template/direct-template-signing-auth-page.tsx
 msgid "Authentication required"
 msgstr "Wymagana autoryzacja"
@@ -4482,10 +4488,6 @@ msgstr "Powód odrzucenia: {rejectionReason}"
 msgid "Reason must be less than 500 characters"
 msgstr "Powód musi mieć mniej niż 500 znaków"
 
-#: apps/remix/app/components/general/document-signing/document-signing-auth-dialog.tsx
-msgid "Reauthentication is required to sign this field"
-msgstr "Wymagana jest ponowna autoryzacja, aby podpisać to pole"
-
 #: packages/ui/components/recipient/recipient-role-select.tsx
 msgid "Receives copy"
 msgstr "Otrzymuje kopię"
@@ -5063,10 +5065,6 @@ msgstr "Podpisz dokument"
 msgid "Sign Document"
 msgstr "Podpisz dokument"
 
-#: apps/remix/app/components/general/document-signing/document-signing-auth-dialog.tsx
-msgid "Sign field"
-msgstr "Pole podpisu"
-
 #: apps/remix/app/components/forms/signup.tsx
 msgid "Sign Here"
 msgstr "Podpisz tutaj"
@@ -5226,6 +5224,10 @@ msgstr "Baner strony"
 #: apps/remix/app/routes/_authenticated+/admin+/_layout.tsx
 msgid "Site Settings"
 msgstr "Ustawienia strony"
+
+#: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
+msgid "SMS Re-Authentication"
+msgstr ""
 
 #: packages/ui/primitives/document-flow/missing-signature-field-dialog.tsx
 msgid "Some signers have not been assigned a signature field. Please assign at least 1 signature field to each signer before proceeding."

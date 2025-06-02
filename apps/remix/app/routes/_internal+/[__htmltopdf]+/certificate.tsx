@@ -137,6 +137,7 @@ export default function SigningCertificate({ loaderData }: Route.ComponentProps)
       .with('ACCOUNT', () => _(msg`Account Re-Authentication`))
       .with('TWO_FACTOR_AUTH', () => _(msg`Two-Factor Re-Authentication`))
       .with('PASSKEY', () => _(msg`Passkey Re-Authentication`))
+      .with('SMS', () => _(msg`SMS Re-Authentication`))
       .with('EXPLICIT_NONE', () => _(msg`Email`))
       .with(null, () => null)
       .exhaustive();

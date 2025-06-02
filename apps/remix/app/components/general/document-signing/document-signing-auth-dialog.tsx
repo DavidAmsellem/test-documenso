@@ -24,6 +24,7 @@ export type DocumentSigningAuthDialogProps = {
   title?: string;
   documentAuthType: TRecipientActionAuthTypes;
   description?: string;
+  actionTarget?: string;
 
   open: boolean;
   onOpenChange: (value: boolean) => void;

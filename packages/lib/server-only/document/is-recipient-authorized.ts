@@ -111,8 +111,9 @@ export const isRecipientAuthorized = async ({
       return recipientUser.id === userId;
     })
     .with({ type: DocumentAuth.PASSKEY }, async ({ authenticationResponse, tokenReference }) => {
+      // userId is guaranteed to be defined here due to previous check
       return await isPasskeyAuthValid({
-        userId,
+        userId: userId!,
         authenticationResponse,
         tokenReference,
       });

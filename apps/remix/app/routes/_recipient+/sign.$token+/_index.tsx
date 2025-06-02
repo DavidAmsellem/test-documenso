@@ -114,8 +114,13 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     isDocumentAccessValid,
   });
 
-  // Si requiere SMS/2FA pero no login, permitir acceso
-  const isSMSAuth = derivedRecipientAccessAuth?.type === 'SMS';
+  // Check if this is SMS-based authentication (action auth, not access auth)
+  const { derivedRecipientActionAuth } = extractDocumentAuthMethods({
+    documentAuth: document.authOptions,
+    recipientAuth: recipient.authOptions,
+  });
+
+  const isSMSAuth = derivedRecipientActionAuth === 'SMS';
   const shouldAllowSMSAccess = isSMSAuth && !user;
 
   // ✅ AGREGAR ESTE LOG:

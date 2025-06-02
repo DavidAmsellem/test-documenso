@@ -87,13 +87,11 @@ const PinInputSlot = React.forwardRef<
         isActive && 'ring-ring z-10 ring-1',
         className,
       )}
-      autoComplete="new-password"
       inputMode="none"
       spellCheck="false"
       autoCorrect="off"
       autoCapitalize="off"
       aria-autocomplete="none"
-      name={randomName}
       data-value={char || ''}
       data-random-name={randomName}
       data-autocomplete="off"

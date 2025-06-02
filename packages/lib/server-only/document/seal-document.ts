@@ -18,6 +18,7 @@ import { getFileServerSide } from '../../universal/upload/get-file.server';
 import { putPdfFileServerSide } from '../../universal/upload/put-file.server';
 import { fieldsContainUnsignedRequiredField } from '../../utils/advanced-fields-helpers';
 import { getCertificatePdf } from '../htmltopdf/get-certificate-pdf';
+import { addCertificationPage } from '../pdf/add-certification-page';
 import { addRejectionStampToPdf } from '../pdf/add-rejection-stamp-to-pdf';
 import { flattenAnnotations } from '../pdf/flatten-annotations';
 import { flattenForm } from '../pdf/flatten-form';
@@ -50,6 +51,7 @@ export const sealDocument = async ({
       recipients: true,
       team: {
         select: {
+          name: true,
           teamGlobalSettings: {
             select: {
               includeSigningCertificate: true,
@@ -144,6 +146,38 @@ export const sealDocument = async ({
     certificatePages.forEach((page) => {
       doc.addPage(page);
     });
+  } // Añadir página de certificación personalizada (nueva funcionalidad)
+  if (document.team?.teamGlobalSettings?.includeSigningCertificate ?? true) {
+    try {
+      // Preparar información de los firmantes para la certificación
+      const signersInfo = recipients.map((recipient) => ({
+        name: recipient.name,
+        email: recipient.email,
+        signedAt: recipient.signedAt || undefined,
+        role: recipient.role || undefined,
+      }));
+
+      const customCertificationPage = await addCertificationPage({
+        documentId: document.id,
+        documentTitle: document.title,
+        companyName: document.team?.name || 'Documenso',
+        signers: signersInfo,
+      });
+
+      if (customCertificationPage) {
+        const customCertDoc = await PDFDocument.load(customCertificationPage);
+        const customCertPages = await doc.copyPages(customCertDoc, customCertDoc.getPageIndices());
+
+        customCertPages.forEach((page) => {
+          doc.addPage(page);
+        });
+
+        console.log('✅ Custom certification page added to document:', document.id);
+      }
+    } catch (error) {
+      console.error('❌ Error adding custom certification page:', error);
+      // Continue without the custom certification page - no need to fail the entire process
+    }
   }
 
   for (const field of fields) {

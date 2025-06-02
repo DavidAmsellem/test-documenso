@@ -10,6 +10,7 @@ import { AppError, AppErrorCode } from '../../../errors/app-error';
 import { sendCompletedEmail } from '../../../server-only/document/send-completed-email';
 import PostHogServerClient from '../../../server-only/feature-flags/get-post-hog-server-client';
 import { getCertificatePdf } from '../../../server-only/htmltopdf/get-certificate-pdf';
+import { addCertificationPage } from '../../../server-only/pdf/add-certification-page';
 import { addRejectionStampToPdf } from '../../../server-only/pdf/add-rejection-stamp-to-pdf';
 import { flattenAnnotations } from '../../../server-only/pdf/flatten-annotations';
 import { flattenForm } from '../../../server-only/pdf/flatten-form';
@@ -49,6 +50,7 @@ export const run = async ({
       recipients: true,
       team: {
         select: {
+          name: true,
           teamGlobalSettings: {
             select: {
               includeSigningCertificate: true,
@@ -72,7 +74,7 @@ export const run = async ({
   // Seems silly but we need to do this in case the job is re-ran
   // after it has already run through the update task further below.
   // eslint-disable-next-line @typescript-eslint/require-await
-  const documentStatus = await io.runTask('get-document-status', async () => {
+  const _documentStatus = await io.runTask('get-document-status', async () => {
     return document.status;
   });
 
@@ -176,6 +178,43 @@ export const run = async ({
       certificatePages.forEach((page) => {
         pdfDoc.addPage(page);
       });
+    }
+
+    // Añadir página de certificación personalizada (nueva funcionalidad)
+    if (document.team?.teamGlobalSettings?.includeSigningCertificate ?? true) {
+      try {
+        // Preparar información de los firmantes para la certificación
+        const signersInfo = recipients.map((recipient) => ({
+          name: recipient.name,
+          email: recipient.email,
+          signedAt: recipient.signedAt || undefined,
+          role: recipient.role || undefined,
+        }));
+
+        const customCertificationPage = await addCertificationPage({
+          documentId: document.id,
+          documentTitle: document.title,
+          companyName: document.team?.name || 'Documenso',
+          signers: signersInfo,
+        });
+
+        if (customCertificationPage) {
+          const customCertDoc = await PDFDocument.load(customCertificationPage);
+          const customCertPages = await pdfDoc.copyPages(
+            customCertDoc,
+            customCertDoc.getPageIndices(),
+          );
+
+          customCertPages.forEach((page) => {
+            pdfDoc.addPage(page);
+          });
+
+          console.log('✅ Custom certification page added to document:', document.id);
+        }
+      } catch (error) {
+        console.error('❌ Error adding custom certification page:', error);
+        // Continue without the custom certification page - no need to fail the entire process
+      }
     }
 
     for (const field of fields) {

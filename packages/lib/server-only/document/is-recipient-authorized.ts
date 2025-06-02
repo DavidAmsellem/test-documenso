@@ -75,10 +75,30 @@ export const isRecipientAuthorized = async ({
     };
   }
 
+  // ✅ REEMPLAZAR ESTAS LÍNEAS (75-77):
   // Authentication required does not match provided method.
-  if (!authOptions || authOptions.type !== authMethod || !userId) {
+  // if (!authOptions || authOptions.type !== authMethod || !userId) {
+  //   return false;
+  // }
+
+  // ✅ NUEVA LÓGICA - Excluir SMS de requerir userId:
+  if (!authOptions || authOptions.type !== authMethod) {
     return false;
   }
+
+  // Para métodos que no sean SMS, requerir userId
+  if (authMethod !== DocumentAuth.SMS && !userId) {
+    console.log('🚨 AUTH REJECTED - Missing userId for non-SMS method:', { authMethod, userId });
+    return false;
+  }
+
+  // ✅ AGREGAR ESTE LOG:
+  console.log('🔍 AUTH VALIDATION:', {
+    authMethod,
+    userId: userId || 'NO USER',
+    authOptionsType: authOptions?.type,
+    isSMS: authMethod === DocumentAuth.SMS,
+  });
 
   return await match(authOptions)
     .with({ type: DocumentAuth.ACCOUNT }, async () => {
@@ -117,6 +137,12 @@ export const isRecipientAuthorized = async ({
         window: 10, // 5 minutes worth of tokens
       });
     })
+    .with({ type: DocumentAuth.SMS }, async ({ token, phoneNumber }) => {
+      return await isSmsAuthValid({
+        token,
+        phoneNumber,
+      });
+    })
     .exhaustive();
 };
 
@@ -143,6 +169,27 @@ type VerifyPasskeyOptions = {
  */
 const isPasskeyAuthValid = async (options: VerifyPasskeyOptions): Promise<boolean> => {
   return verifyPasskey(options)
+    .then(() => true)
+    .catch(() => false);
+};
+
+type VerifySmsOptions = {
+  /**
+   * The SMS verification token.
+   */
+  token: string;
+
+  /**
+   * The phone number that should match the token.
+   */
+  phoneNumber: string;
+};
+
+/**
+ * Whether the provided SMS token is valid.
+ */
+const isSmsAuthValid = async (options: VerifySmsOptions): Promise<boolean> => {
+  return verifySmsToken(options)
     .then(() => true)
     .catch(() => false);
 };
@@ -219,6 +266,52 @@ const verifyPasskey = async ({
     data: {
       lastUsedAt: new Date(),
       counter: verification.authenticationInfo.newCounter,
+    },
+  });
+};
+
+/**
+ * Verifies whether the provided SMS token is valid.
+ *
+ * Will throw an error if the token is invalid or expired.
+ */
+const verifySmsToken = async ({ token, phoneNumber }: VerifySmsOptions): Promise<void> => {
+  // In development mode with 'dev' SMS provider, allow predefined test codes
+  const smsProvider = process.env.SMS_PROVIDER;
+  const testCodes = ['123456', '111111', '000000'];
+
+  if (smsProvider === 'dev' && testCodes.includes(token)) {
+    console.log(`✅ Development SMS: Accepted test code ${token} for ${phoneNumber}`);
+    return; // Allow test codes to pass verification
+  }
+
+  const smsToken = await prisma.smsVerificationToken.findFirst({
+    where: {
+      token,
+      phoneNumber,
+      used: false,
+    },
+  });
+
+  if (!smsToken) {
+    throw new AppError(AppErrorCode.NOT_FOUND, {
+      message: 'SMS token not found',
+    });
+  }
+
+  if (smsToken.expiresAt < new Date()) {
+    throw new AppError(AppErrorCode.EXPIRED_CODE, {
+      message: 'SMS token expired',
+    });
+  }
+
+  // Mark the token as used
+  await prisma.smsVerificationToken.update({
+    where: {
+      id: smsToken.id,
+    },
+    data: {
+      used: true,
     },
   });
 };

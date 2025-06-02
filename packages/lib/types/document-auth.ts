@@ -9,6 +9,7 @@ export const ZDocumentAuthTypesSchema = z.enum([
   'ACCOUNT',
   'PASSKEY',
   'TWO_FACTOR_AUTH',
+  'SMS',
   'EXPLICIT_NONE',
 ]);
 export const DocumentAuth = ZDocumentAuthTypesSchema.Enum;
@@ -32,6 +33,12 @@ const ZDocumentAuth2FASchema = z.object({
   token: z.string().min(4).max(10),
 });
 
+const ZDocumentAuthSMSSchema = z.object({
+  type: z.literal(DocumentAuth.SMS),
+  token: z.string().min(4).max(10),
+  phoneNumber: z.string().min(1),
+});
+
 /**
  * All the document auth methods for both accessing and actioning.
  */
@@ -40,6 +47,7 @@ export const ZDocumentAuthMethodsSchema = z.discriminatedUnion('type', [
   ZDocumentAuthExplicitNoneSchema,
   ZDocumentAuthPasskeySchema,
   ZDocumentAuth2FASchema,
+  ZDocumentAuthSMSSchema,
 ]);
 
 /**
@@ -61,9 +69,15 @@ export const ZDocumentActionAuthSchema = z.discriminatedUnion('type', [
   ZDocumentAuthAccountSchema,
   ZDocumentAuthPasskeySchema,
   ZDocumentAuth2FASchema,
+  ZDocumentAuthSMSSchema,
 ]);
 export const ZDocumentActionAuthTypesSchema = z
-  .enum([DocumentAuth.ACCOUNT, DocumentAuth.PASSKEY, DocumentAuth.TWO_FACTOR_AUTH])
+  .enum([
+    DocumentAuth.ACCOUNT,
+    DocumentAuth.PASSKEY,
+    DocumentAuth.TWO_FACTOR_AUTH,
+    DocumentAuth.SMS,
+  ])
   .describe(
     'The type of authentication required for the recipient to sign the document. This field is restricted to Enterprise plan users only.',
   );
@@ -89,6 +103,7 @@ export const ZRecipientActionAuthSchema = z.discriminatedUnion('type', [
   ZDocumentAuthAccountSchema,
   ZDocumentAuthPasskeySchema,
   ZDocumentAuth2FASchema,
+  ZDocumentAuthSMSSchema,
   ZDocumentAuthExplicitNoneSchema,
 ]);
 export const ZRecipientActionAuthTypesSchema = z
@@ -96,6 +111,7 @@ export const ZRecipientActionAuthTypesSchema = z
     DocumentAuth.ACCOUNT,
     DocumentAuth.PASSKEY,
     DocumentAuth.TWO_FACTOR_AUTH,
+    DocumentAuth.SMS,
     DocumentAuth.EXPLICIT_NONE,
   ])
   .describe('The type of authentication required for the recipient to sign the document.');

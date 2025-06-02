@@ -1342,6 +1342,7 @@ msgstr "Avatar aktualisiert"
 msgid "Awaiting email confirmation"
 msgstr "Warte auf E-Mail-Bestätigung"
 
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
 #: apps/remix/app/components/general/direct-template/direct-template-signing-form.tsx
 #: apps/remix/app/components/forms/signup.tsx
 #: apps/remix/app/components/embed/authoring/configure-fields-view.tsx
@@ -1487,6 +1488,7 @@ msgstr "Kann vorbereiten"
 #: apps/remix/app/components/general/document-signing/document-signing-form.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-passkey.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-passkey.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-account.tsx
@@ -2911,6 +2913,16 @@ msgstr "Geben Sie Ihre E-Mail-Adresse ein, um das abgeschlossene Dokument zu erh
 msgid "Enter your name"
 msgstr "Geben Sie Ihren Namen ein"
 
+#. placeholder {0}: actionVerb.toLowerCase()
+#. placeholder {1}: actionTarget.toLowerCase()
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Enter your phone number to receive a verification code to {0} this {1}."
+msgstr ""
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Enter your phone number to receive a verification code to view this document."
+msgstr ""
+
 #: apps/remix/app/components/general/document-signing/document-signing-text-field.tsx
 msgid "Enter your text here"
 msgstr "Geben Sie hier Ihren Text ein"
@@ -2948,6 +2960,7 @@ msgstr "Geben Sie hier Ihren Text ein"
 #: apps/remix/app/components/general/document-signing/document-signing-checkbox-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-checkbox-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
@@ -3017,6 +3030,10 @@ msgstr "Dokument konnte nicht erneut versiegelt werden"
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
 msgid "Failed to save settings."
 msgstr "Einstellungen konnten nicht gespeichert werden."
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Failed to send SMS verification code. Please check your phone number and try again."
+msgstr ""
 
 #: apps/remix/app/routes/embed+/v1+/authoring+/document.edit.$id.tsx
 msgid "Failed to update document"
@@ -4651,6 +4668,10 @@ msgstr "Dokument wieder versiegeln"
 msgid "Resend"
 msgstr "Erneut senden"
 
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Resend Code"
+msgstr ""
+
 #: apps/remix/app/components/general/verify-email-banner.tsx
 msgid "Resend Confirmation Email"
 msgstr "Bestätigungs-E-Mail erneut senden"
@@ -4861,6 +4882,10 @@ msgstr ""
 #: packages/ui/primitives/document-flow/add-subject.tsx
 msgid "Send"
 msgstr "Senden"
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Send Code"
+msgstr ""
 
 #: apps/remix/app/components/forms/send-confirmation-email.tsx
 msgid "Send confirmation email"
@@ -6433,6 +6458,7 @@ msgid "Unable to sign in"
 msgstr "Anmeldung nicht möglich"
 
 #: apps/remix/app/routes/_authenticated+/settings+/tokens.tsx
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-2fa.tsx
 msgid "Unauthorized"
 msgstr "Nicht autorisiert"
@@ -6685,6 +6711,10 @@ msgstr "Bestätigungs-E-Mail gesendet"
 #: apps/remix/app/components/general/verify-email-banner.tsx
 msgid "Verification email sent successfully."
 msgstr "Bestätigungs-E-Mail erfolgreich gesendet."
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Verify"
+msgstr ""
 
 #: apps/remix/app/components/general/verify-email-banner.tsx
 msgid "Verify Now"
@@ -7033,6 +7063,10 @@ msgstr "Wir konnten Ihre Markenpräferenzen zu diesem Zeitpunkt nicht aktualisie
 msgid "We were unable to update your document preferences at this time, please try again later"
 msgstr "Wir konnten Ihre Dokumentpräferenzen zu diesem Zeitpunkt nicht aktualisieren, bitte versuchen Sie es später noch einmal"
 
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "We were unable to verify your code. Please try again or contact support."
+msgstr ""
+
 #: apps/remix/app/components/general/document-signing/document-signing-auth-2fa.tsx
 msgid "We were unable to verify your details. Please try again or contact support"
 msgstr "Wir konnten Ihre Angaben nicht verifizieren. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support"
@@ -7071,6 +7105,10 @@ msgstr "Wir warten noch darauf, dass andere Unterzeichner dieses Dokument unterz
 #: packages/email/templates/reset-password.tsx
 msgid "We've changed your password as you asked. You can now sign in with your new password."
 msgstr "Wir haben dein Passwort wie gewünscht geändert. Du kannst dich jetzt mit deinem neuen Passwort anmelden."
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "We've sent a 6-digit verification code to {phoneNumber}. Enter the code below to continue."
+msgstr ""
 
 #: apps/remix/app/components/general/verify-email-banner.tsx
 msgid "We've sent a confirmation email to <0>{email}</0>. Please check your inbox and click the link in the email to verify your account."

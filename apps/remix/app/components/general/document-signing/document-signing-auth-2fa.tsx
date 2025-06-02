@@ -141,14 +141,36 @@ export const DocumentSigningAuth2FA = ({
                   <FormLabel required>2FA token</FormLabel>
 
                   <FormControl>
-                    <PinInput {...field} value={field.value ?? ''} maxLength={6}>
+                    {/* Debug temporal */}
+                    {process.env.NODE_ENV === 'development' && (
+                      <div style={{ fontSize: '12px', color: 'red', marginBottom: '8px' }}>
+                        🔍 Debug: field.value = "{field.value}", type = {typeof field.value}
+                      </div>
+                    )}
+
+                    <PinInput
+                      {...field}
+                      value={field.value ?? ''}
+                      maxLength={6}
+                      inputMode="numeric"
+                      name={`2fa-auth-${Math.random().toString(36).substring(2, 10)}`}
+                      // Forzar que no tenga ningún valor predefinido
+                      defaultValue=""
+                    >
                       {Array(6)
                         .fill(null)
-                        .map((_, i) => (
-                          <PinInputGroup key={i}>
-                            <PinInputSlot index={i} />
-                          </PinInputGroup>
-                        ))}
+                        .map((_, i) => {
+                          const randomKey = `${Math.random().toString(36).substring(2, 10)}`;
+                          return (
+                            <PinInputGroup key={`group-${randomKey}-${i}`}>
+                              <PinInputSlot
+                                index={i}
+                                key={`slot-${randomKey}-${i}`}
+                                id={`2fa-pin-${i}-${randomKey}`}
+                              />
+                            </PinInputGroup>
+                          );
+                        })}
                     </PinInput>
                   </FormControl>
 

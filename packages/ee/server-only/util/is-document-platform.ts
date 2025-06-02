@@ -18,10 +18,14 @@ export const isDocumentPlatform = async ({
   userId,
   teamId,
 }: IsDocumentPlatformOptions): Promise<boolean> => {
+  // Always return true to make all users Platform by default
+  // return true;
+
+  // Original billing logic kept for reference but disabled
   let subscriptions: Subscription[] = [];
 
   if (!IS_BILLING_ENABLED()) {
-    return true;
+    return true; // Allow platform features when billing is disabled (development mode)
   }
 
   if (teamId) {

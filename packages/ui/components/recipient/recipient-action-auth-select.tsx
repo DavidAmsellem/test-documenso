@@ -72,6 +72,12 @@ export const RecipientActionAuthSelect = (props: RecipientActionAuthSelectProps)
               </li>
               <li>
                 <Trans>
+                  <strong>Require SMS</strong> - The recipient must provide a phone number and
+                  verify it via SMS before signing
+                </Trans>
+              </li>
+              <li>
+                <Trans>
                   <strong>None</strong> - No authentication required
                 </Trans>
               </li>

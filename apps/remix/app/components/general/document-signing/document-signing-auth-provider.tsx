@@ -134,24 +134,40 @@ export const DocumentSigningAuthProvider = ({
     .with(DocumentAuth.EXPLICIT_NONE, () => ({
       type: DocumentAuth.EXPLICIT_NONE,
     }))
+    // ✅ AGREGAR ESTA LÍNEA PARA SMS:
+    .with(DocumentAuth.SMS, () => {
+      // Para SMS, no necesitamos precalcular nada, siempre debe mostrar el modal
+      return null;
+    })
     .with(DocumentAuth.PASSKEY, DocumentAuth.TWO_FACTOR_AUTH, null, () => null)
     .exhaustive();
 
   const executeActionAuthProcedure = async (options: ExecuteActionAuthProcedureOptions) => {
+    // ✅ AGREGAR ESTE LOG:
+    console.log('🔍 EXECUTE AUTH PROCEDURE:', {
+      derivedRecipientActionAuth,
+      actionTarget: options.actionTarget,
+      hasPreCalculated: !!preCalculatedActionAuthOptions,
+      user: user ? 'LOGGED IN' : 'NO USER',
+    });
+
     // Directly run callback if no auth required.
     if (!derivedRecipientActionAuth || options.actionTarget !== FieldType.SIGNATURE) {
+      console.log('✅ NO AUTH REQUIRED - Running callback directly');
       await options.onReauthFormSubmit();
       return;
     }
 
     // Run callback with precalculated auth options if available.
     if (preCalculatedActionAuthOptions) {
+      console.log('✅ USING PRECALCULATED AUTH');
       setDocumentAuthDialogPayload(null);
       await options.onReauthFormSubmit(preCalculatedActionAuthOptions);
       return;
     }
 
     // Request the required auth from the user.
+    console.log('🔍 SHOWING AUTH DIALOG for:', derivedRecipientActionAuth);
     setDocumentAuthDialogPayload({
       ...options,
     });
@@ -171,8 +187,21 @@ export const DocumentSigningAuthProvider = ({
   const isAuthRedirectRequired = Boolean(
     derivedRecipientActionAuth &&
       derivedRecipientActionAuth !== DocumentAuth.EXPLICIT_NONE &&
-      user?.email !== recipient.email,
+      user?.email !== recipient.email &&
+      derivedRecipientActionAuth !== DocumentAuth.SMS, // ← CAMBIAR "SMSE" por "SMS"
   );
+
+  // ✅ AGREGAR ESTE LOG PARA CONFIRMAR:
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔍 AUTH REDIRECT LOGIC:', {
+      derivedRecipientActionAuth,
+      userEmail: user?.email,
+      recipientEmail: recipient.email,
+      emailMatch: user?.email === recipient.email,
+      isSMS: derivedRecipientActionAuth === DocumentAuth.SMS,
+      isAuthRedirectRequired,
+    });
+  }
 
   const refetchPasskeys = async () => {
     await passkeyQuery.refetch();

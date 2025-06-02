@@ -92,6 +92,12 @@ export const DocumentGlobalAuthActionTooltip = () => (
         </li>
         <li>
           <Trans>
+            <strong>Require SMS</strong> - The recipient must provide a phone number and verify it
+            via SMS before signing
+          </Trans>
+        </li>
+        <li>
+          <Trans>
             <strong>No restrictions</strong> - No authentication required
           </Trans>
         </li>

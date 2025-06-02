@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/react/macro';
-import type { FieldType } from '@prisma/client';
-import { P, match } from 'ts-pattern';
+import { match } from 'ts-pattern';
 
 import {
   DocumentAuth,
@@ -19,12 +18,13 @@ import { DocumentSigningAuth2FA } from './document-signing-auth-2fa';
 import { DocumentSigningAuthAccount } from './document-signing-auth-account';
 import { DocumentSigningAuthPasskey } from './document-signing-auth-passkey';
 import { useRequiredDocumentSigningAuthContext } from './document-signing-auth-provider';
+import { DocumentSigningAuthSMS } from './document-signing-auth-sms';
 
 export type DocumentSigningAuthDialogProps = {
   title?: string;
   documentAuthType: TRecipientActionAuthTypes;
   description?: string;
-  actionTarget: FieldType | 'DOCUMENT';
+
   open: boolean;
   onOpenChange: (value: boolean) => void;
 
@@ -38,37 +38,54 @@ export const DocumentSigningAuthDialog = ({
   title,
   description,
   documentAuthType,
+  actionTarget: _actionTarget,
   open,
   onOpenChange,
   onReauthFormSubmit,
 }: DocumentSigningAuthDialogProps) => {
-  const { recipient, user, isCurrentlyAuthenticating } = useRequiredDocumentSigningAuthContext();
+  const {
+    recipient: _recipient,
+    user: _user,
+    isCurrentlyAuthenticating,
+  } = useRequiredDocumentSigningAuthContext();
+
+  // ✅ QUITAR O COMENTAR ESTOS LOGS:
+  // console.log('🔍 AUTH DIALOG RENDERED:', {
+  //   documentAuthType,
+  //   open,
+  //   title,
+  //   description,
+  // });
 
   const handleOnOpenChange = (value: boolean) => {
     if (isCurrentlyAuthenticating) {
       return;
     }
-
     onOpenChange(value);
   };
 
   return (
     <Dialog open={open} onOpenChange={handleOnOpenChange}>
-      <DialogContent>
+      <DialogContent className="w-full max-w-lg">
         <DialogHeader>
-          <DialogTitle>{title || <Trans>Sign field</Trans>}</DialogTitle>
-
-          <DialogDescription>
-            {description || <Trans>Reauthentication is required to sign this field</Trans>}
-          </DialogDescription>
+          <DialogTitle>{title || <Trans>Authentication required</Trans>}</DialogTitle>
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
 
-        {match({ documentAuthType, user })
-          .with(
-            { documentAuthType: DocumentAuth.ACCOUNT },
-            { user: P.when((user) => !user || user.email !== recipient.email) }, // Assume all current auth methods requires them to be logged in.
-            () => <DocumentSigningAuthAccount onOpenChange={onOpenChange} />,
-          )
+        {/* ✅ QUITAR ESTE LOG: */}
+        {/* {console.log('🔍 DIALOG MATCH INPUT:', {
+          documentAuthType,
+          typeof: typeof documentAuthType,
+        })} */}
+
+        {match({ documentAuthType })
+          .with({ documentAuthType: DocumentAuth.ACCOUNT }, () => (
+            <DocumentSigningAuthAccount
+              open={open}
+              onOpenChange={onOpenChange}
+              onReauthFormSubmit={onReauthFormSubmit}
+            />
+          ))
           .with({ documentAuthType: DocumentAuth.PASSKEY }, () => (
             <DocumentSigningAuthPasskey
               open={open}
@@ -83,6 +100,17 @@ export const DocumentSigningAuthDialog = ({
               onReauthFormSubmit={onReauthFormSubmit}
             />
           ))
+          .with({ documentAuthType: DocumentAuth.SMS }, () => {
+            // ✅ QUITAR ESTE LOG:
+            // console.log('🔍 MATCHING SMS CASE - Rendering DocumentSigningAuthSMS');
+            return (
+              <DocumentSigningAuthSMS
+                open={open}
+                onOpenChange={onOpenChange}
+                onReauthFormSubmit={onReauthFormSubmit}
+              />
+            );
+          })
           .with({ documentAuthType: DocumentAuth.EXPLICIT_NONE }, () => null)
           .exhaustive()}
       </DialogContent>

@@ -45,6 +45,7 @@ const AUTO_SIGNABLE_FIELD_TYPES: string[] = [
 const NON_AUTO_SIGNABLE_ACTION_AUTH_TYPES: string[] = [
   DocumentAuth.PASSKEY,
   DocumentAuth.TWO_FACTOR_AUTH,
+  DocumentAuth.SMS,
 ];
 
 // The threshold for the number of fields that could be autosigned before displaying the dialog
@@ -182,7 +183,7 @@ export const DocumentSigningAutoSign = ({ recipient, fields }: DocumentSigningAu
           <ul className="mt-4 flex list-inside list-disc flex-col gap-y-0.5">
             {AUTO_SIGNABLE_FIELD_TYPES.map((fieldType) => (
               <li key={fieldType}>
-                <Trans>{_(FRIENDLY_FIELD_TYPE[fieldType as FieldType])}</Trans>
+                <Trans>{fieldType && _(FRIENDLY_FIELD_TYPE[fieldType])}</Trans>
                 <span className="pl-2 text-sm">
                   (
                   <Plural

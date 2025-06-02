@@ -232,6 +232,20 @@ model ApiToken {
   team      Team?             @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
+model SmsVerificationToken {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  phoneNumber String
+  recipientId Int?
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  used        Boolean  @default(false)
+
+  @@index([token])
+  @@index([phoneNumber])
+  @@index([recipientId])
+}
+
 enum SubscriptionStatus {
   ACTIVE
   PAST_DUE

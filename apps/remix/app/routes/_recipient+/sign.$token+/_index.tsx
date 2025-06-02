@@ -104,9 +104,34 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     userId: user?.id,
   });
 
+  // ✅ AGREGAR ESTOS LOGS:
+  console.log('🔍 AUTH DEBUG:', {
+    user: user ? { id: user.id, email: user.email } : 'NO USER',
+    recipientEmail: recipient.email,
+    documentAuthOptions: document.authOptions,
+    recipientAuthOptions: recipient.authOptions,
+    derivedRecipientAccessAuth,
+    isDocumentAccessValid,
+  });
+
+  // Si requiere SMS/2FA pero no login, permitir acceso
+  const isSMSAuth = derivedRecipientAccessAuth?.type === 'SMS';
+  const shouldAllowSMSAccess = isSMSAuth && !user;
+
+  // ✅ AGREGAR ESTE LOG:
+  console.log('🔍 SMS AUTH LOGIC:', {
+    isSMSAuth,
+    hasUser: !!user,
+    shouldAllowSMSAccess,
+    finalDecision: isDocumentAccessValid || shouldAllowSMSAccess,
+  });
+
   let recipientHasAccount: boolean | null = null;
 
-  if (!isDocumentAccessValid) {
+  // ✅ CAMBIAR ESTA CONDICIÓN Y AGREGAR LOG:
+  if (!isDocumentAccessValid && !shouldAllowSMSAccess) {
+    console.log('🚨 REDIRECTING TO AUTH PAGE - Access denied');
+
     recipientHasAccount = await getUserByEmail({ email: recipient.email })
       .then((user) => !!user)
       .catch(() => false);
@@ -117,6 +142,9 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       recipientHasAccount,
     } as const);
   }
+
+  // ✅ AGREGAR ESTE LOG:
+  console.log('✅ ACCESS GRANTED - Proceeding to document view');
 
   await viewedDocument({
     token,
@@ -158,7 +186,15 @@ export default function SigningPage() {
   const { sessionData } = useOptionalSession();
   const user = sessionData?.user;
 
+  // ✅ AGREGAR ESTE LOG:
+  console.log('🔍 COMPONENT DEBUG:', {
+    isDocumentAccessValid: data.isDocumentAccessValid,
+    userFromSession: user ? { id: user.id, email: user.email } : 'NO USER',
+    dataKeys: Object.keys(data),
+  });
+
   if (!data.isDocumentAccessValid) {
+    console.log('🚨 SHOWING AUTH PAGE COMPONENT');
     return (
       <DocumentSigningAuthPageView
         email={data.recipientEmail}
@@ -166,6 +202,8 @@ export default function SigningPage() {
       />
     );
   }
+
+  console.log('✅ SHOWING DOCUMENT SIGNING PAGE');
 
   const {
     document,

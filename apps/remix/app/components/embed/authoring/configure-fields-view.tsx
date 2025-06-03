@@ -105,6 +105,8 @@ export const ConfigureFieldsView = ({
       id: signer.nativeId || index,
       name: signer.name || '',
       email: signer.email || '',
+      phone: signer.phone || '',
+      dni: signer.dni || '',
       role: signer.role,
       signingOrder: signer.signingOrder || null,
       documentId: null,

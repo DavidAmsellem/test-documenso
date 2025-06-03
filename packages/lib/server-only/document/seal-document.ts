@@ -180,6 +180,8 @@ export const sealDocument = async ({
       const signersInfo = recipients.map((recipient) => ({
         name: recipient.name,
         email: recipient.email,
+        dni: recipient.dni || undefined,
+        phone: recipient.phone || undefined,
         signedAt: recipient.signedAt || undefined,
         role: recipient.role || undefined,
         signatureHash:

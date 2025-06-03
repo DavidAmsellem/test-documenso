@@ -24,6 +24,11 @@ export const ZGetRecipientResponseSchema = ZRecipientSchema;
 export const ZCreateRecipientSchema = z.object({
   email: z.string().toLowerCase().email().min(1),
   name: z.string(),
+  phone: z
+    .string()
+    .min(1, 'Phone number is required')
+    .max(50, 'Phone number must not exceed 50 characters'),
+  dni: z.string().min(1, 'DNI is required').max(50, 'DNI must not exceed 50 characters'),
   role: z.nativeEnum(RecipientRole),
   signingOrder: z.number().optional(),
   accessAuth: ZRecipientAccessAuthTypesSchema.optional().nullable(),
@@ -34,6 +39,8 @@ export const ZUpdateRecipientSchema = z.object({
   id: z.number().describe('The ID of the recipient to update.'),
   email: z.string().toLowerCase().email().min(1).optional(),
   name: z.string().optional(),
+  phone: z.string().min(1).max(50).optional(),
+  dni: z.string().min(1).max(50).optional(),
   role: z.nativeEnum(RecipientRole).optional(),
   signingOrder: z.number().optional(),
   accessAuth: ZRecipientAccessAuthTypesSchema.optional().nullable(),

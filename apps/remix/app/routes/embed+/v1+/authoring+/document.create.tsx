@@ -87,6 +87,8 @@ export default function EmbeddingAuthoringDocumentCreatePage() {
         recipients: configuration.signers.map((signer) => ({
           name: signer.name,
           email: signer.email,
+          phone: signer.phone || '',
+          dni: signer.dni || '',
           role: signer.role,
           fields: fields
             .filter((field) => field.signerEmail === signer.email)

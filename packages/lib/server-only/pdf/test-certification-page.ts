@@ -9,17 +9,21 @@ async function testCertificationPage() {
   console.log('🧪 Testing certification page generation...');
 
   try {
-    // Datos de prueba para los firmantes
+    // Datos de prueba para los firmantes (incluyendo phone y dni)
     const testSigners = [
       {
         name: 'Juan Pérez García',
         email: 'juan.perez@email.com',
+        dni: '12345678A',
+        phone: '+34 600 123 456',
         signedAt: new Date('2024-01-15T10:30:00Z'),
         role: 'SIGNER',
       },
       {
         name: 'María López Rodríguez',
         email: 'maria.lopez@empresa.com',
+        dni: '87654321B',
+        phone: '+34 700 987 654',
         signedAt: new Date('2024-01-15T11:45:00Z'),
         role: 'APPROVER',
       },

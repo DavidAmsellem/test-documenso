@@ -19,6 +19,8 @@ export const ZConfigureEmbedFormSchema = z.object({
         formId: z.string(),
         name: z.string().min(1, { message: 'Name is required' }),
         email: z.string().email('Invalid email address'),
+        phone: z.string().optional(),
+        dni: z.string().optional(),
         role: z.enum(['SIGNER', 'CC', 'APPROVER', 'VIEWER', 'ASSISTANT']),
         signingOrder: z.number().optional(),
         disabled: z.boolean().optional(),

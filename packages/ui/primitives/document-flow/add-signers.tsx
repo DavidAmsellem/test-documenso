@@ -83,6 +83,8 @@ export const AddSignersFormPartial = ({
       formId: initialId,
       name: '',
       email: '',
+      phone: '',
+      dni: '',
       role: RecipientRole.SIGNER,
       signingOrder: 1,
       actionAuth: undefined,
@@ -100,6 +102,8 @@ export const AddSignersFormPartial = ({
                 formId: String(recipient.id),
                 name: recipient.name,
                 email: recipient.email,
+                phone: recipient.phone || '',
+                dni: recipient.dni || '',
                 role: recipient.role,
                 signingOrder: recipient.signingOrder ?? index + 1,
                 actionAuth:
@@ -189,6 +193,8 @@ export const AddSignersFormPartial = ({
       formId: nanoid(12),
       name: '',
       email: '',
+      phone: '',
+      dni: '',
       role: RecipientRole.SIGNER,
       actionAuth: undefined,
       signingOrder: signers.length > 0 ? (signers[signers.length - 1]?.signingOrder ?? 0) + 1 : 1,
@@ -220,11 +226,15 @@ export const AddSignersFormPartial = ({
     if (emptySignerIndex !== -1) {
       setValue(`signers.${emptySignerIndex}.name`, user?.name ?? '');
       setValue(`signers.${emptySignerIndex}.email`, user?.email ?? '');
+      setValue(`signers.${emptySignerIndex}.phone`, '');
+      setValue(`signers.${emptySignerIndex}.dni`, '');
     } else {
       appendSigner({
         formId: nanoid(12),
         name: user?.name ?? '',
         email: user?.email ?? '',
+        phone: '',
+        dni: '',
         role: RecipientRole.SIGNER,
         actionAuth: undefined,
         signingOrder: signers.length > 0 ? (signers[signers.length - 1]?.signingOrder ?? 0) + 1 : 1,
@@ -237,43 +247,6 @@ export const AddSignersFormPartial = ({
       onAddSigner();
     }
   };
-
-  const onDragEnd = useCallback(
-    async (result: DropResult) => {
-      if (!result.destination) return;
-
-      const items = Array.from(watchedSigners);
-      const [reorderedSigner] = items.splice(result.source.index, 1);
-
-      // Find next valid position
-      let insertIndex = result.destination.index;
-      while (insertIndex < items.length && !canRecipientBeModified(items[insertIndex].nativeId)) {
-        insertIndex++;
-      }
-
-      items.splice(insertIndex, 0, reorderedSigner);
-
-      const updatedSigners = items.map((signer, index) => ({
-        ...signer,
-        signingOrder: !canRecipientBeModified(signer.nativeId) ? signer.signingOrder : index + 1,
-      }));
-
-      form.setValue('signers', updatedSigners);
-
-      const lastSigner = updatedSigners[updatedSigners.length - 1];
-      if (lastSigner.role === RecipientRole.ASSISTANT) {
-        toast({
-          title: _(msg`Warning: Assistant as last signer`),
-          description: _(
-            msg`Having an assistant as the last signer means they will be unable to take any action as there are no subsequent signers to assist.`,
-          ),
-        });
-      }
-
-      await form.trigger('signers');
-    },
-    [form, canRecipientBeModified, watchedSigners, toast],
-  );
 
   const handleRoleChange = useCallback(
     (index: number, role: RecipientRole) => {
@@ -363,6 +336,43 @@ export const AddSignersFormPartial = ({
     form.setValue('signingOrder', DocumentSigningOrder.PARALLEL);
     form.setValue('allowDictateNextSigner', false);
   }, [form]);
+
+  const onDragEnd = useCallback(
+    async (result: DropResult) => {
+      if (!result.destination) return;
+
+      const items = Array.from(watchedSigners);
+      const [reorderedSigner] = items.splice(result.source.index, 1);
+
+      // Find next valid position
+      let insertIndex = result.destination.index;
+      while (insertIndex < items.length && !canRecipientBeModified(items[insertIndex].nativeId)) {
+        insertIndex++;
+      }
+
+      items.splice(insertIndex, 0, reorderedSigner);
+
+      const updatedSigners = items.map((signer, index) => ({
+        ...signer,
+        signingOrder: !canRecipientBeModified(signer.nativeId) ? signer.signingOrder : index + 1,
+      }));
+
+      form.setValue('signers', updatedSigners);
+
+      const lastSigner = updatedSigners[updatedSigners.length - 1];
+      if (lastSigner.role === RecipientRole.ASSISTANT) {
+        toast({
+          title: _(msg`Warning: Assistant as last signer`),
+          description: _(
+            msg`Having an assistant as the last signer means they will be unable to take any action as there are no subsequent signers to assist.`,
+          ),
+        });
+      }
+
+      await form.trigger('signers');
+    },
+    [form, canRecipientBeModified, watchedSigners, toast],
+  );
 
   return (
     <>
@@ -503,9 +513,9 @@ export const AddSignersFormPartial = ({
                             <motion.fieldset
                               data-native-id={signer.nativeId}
                               disabled={isSubmitting || !canRecipientBeModified(signer.nativeId)}
-                              className={cn('grid grid-cols-10 items-end gap-2 pb-2', {
+                              className={cn('grid-cols-14 grid items-end gap-2 pb-2', {
                                 'border-b pt-2': showAdvancedSettings,
-                                'grid-cols-12 pr-3': isSigningOrderSequential,
+                                'grid-cols-16 pr-3': isSigningOrderSequential,
                               })}
                             >
                               {isSigningOrderSequential && (
@@ -563,8 +573,7 @@ export const AddSignersFormPartial = ({
                                       'mb-6':
                                         form.formState.errors.signers?.[index] &&
                                         !form.formState.errors.signers[index]?.email,
-                                      'col-span-4': !showAdvancedSettings,
-                                      'col-span-5': showAdvancedSettings,
+                                      'col-span-3': true,
                                     })}
                                   >
                                     {!showAdvancedSettings && (
@@ -601,8 +610,7 @@ export const AddSignersFormPartial = ({
                                       'mb-6':
                                         form.formState.errors.signers?.[index] &&
                                         !form.formState.errors.signers[index]?.name,
-                                      'col-span-4': !showAdvancedSettings,
-                                      'col-span-5': showAdvancedSettings,
+                                      'col-span-3': true,
                                     })}
                                   >
                                     {!showAdvancedSettings && (
@@ -614,6 +622,79 @@ export const AddSignersFormPartial = ({
                                     <FormControl>
                                       <Input
                                         placeholder={_(msg`Name`)}
+                                        {...field}
+                                        disabled={
+                                          snapshot.isDragging ||
+                                          isSubmitting ||
+                                          !canRecipientBeModified(signer.nativeId)
+                                        }
+                                        onKeyDown={onKeyDown}
+                                      />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={form.control}
+                                name={`signers.${index}.phone`}
+                                render={({ field }) => (
+                                  <FormItem
+                                    className={cn({
+                                      'mb-6':
+                                        form.formState.errors.signers?.[index] &&
+                                        !form.formState.errors.signers[index]?.phone,
+                                      'col-span-2': true,
+                                    })}
+                                  >
+                                    {!showAdvancedSettings && (
+                                      <FormLabel required>
+                                        <Trans>Phone</Trans>
+                                      </FormLabel>
+                                    )}
+
+                                    <FormControl>
+                                      <Input
+                                        type="tel"
+                                        placeholder={_(msg`Phone`)}
+                                        {...field}
+                                        disabled={
+                                          snapshot.isDragging ||
+                                          isSubmitting ||
+                                          !canRecipientBeModified(signer.nativeId)
+                                        }
+                                        onKeyDown={onKeyDown}
+                                      />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={form.control}
+                                name={`signers.${index}.dni`}
+                                render={({ field }) => (
+                                  <FormItem
+                                    className={cn({
+                                      'mb-6':
+                                        form.formState.errors.signers?.[index] &&
+                                        !form.formState.errors.signers[index]?.dni,
+                                      'col-span-2': true,
+                                    })}
+                                  >
+                                    {!showAdvancedSettings && (
+                                      <FormLabel required>
+                                        <Trans>DNI</Trans>
+                                      </FormLabel>
+                                    )}
+
+                                    <FormControl>
+                                      <Input
+                                        placeholder={_(msg`DNI`)}
                                         {...field}
                                         disabled={
                                           snapshot.isDragging ||

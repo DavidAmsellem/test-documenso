@@ -17,6 +17,14 @@ export const ZAddSignersFormSchema = z
           .email({ message: msg`Invalid email`.id })
           .min(1),
         name: z.string(),
+        phone: z
+          .string()
+          .min(1, { message: msg`Phone is required`.id })
+          .max(50, { message: msg`Phone must be 50 characters or less`.id }),
+        dni: z
+          .string()
+          .min(1, { message: msg`DNI is required`.id })
+          .max(50, { message: msg`DNI must be 50 characters or less`.id }),
         role: z.nativeEnum(RecipientRole),
         signingOrder: z.number().optional(),
         actionAuth: ZMapNegativeOneToUndefinedSchema.pipe(

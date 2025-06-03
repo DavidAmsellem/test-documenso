@@ -48,7 +48,15 @@ export const run = async ({
     },
     include: {
       documentMeta: true,
-      recipients: true,
+      recipients: {
+        include: {
+          fields: {
+            include: {
+              signature: true,
+            },
+          },
+        },
+      },
       team: {
         select: {
           name: true,
@@ -61,6 +69,16 @@ export const run = async ({
       },
     },
   });
+
+  console.log(
+    '🔍 HANDLER RECIPIENTS FROM DB:',
+    document.recipients.map((r) => ({
+      name: r.name,
+      email: r.email,
+      phone: r.phone,
+      dni: r.dni,
+    })),
+  );
 
   const isComplete =
     document.recipients.some((recipient) => recipient.signingStatus === SigningStatus.REJECTED) ||
@@ -211,16 +229,27 @@ export const run = async ({
         });
 
         // Preparar información de los firmantes para la certificación
-        const signersInfo = recipients.map((recipient) => ({
-          name: recipient.name,
-          email: recipient.email,
-          dni: recipient.dni || undefined,
-          phone: recipient.phone || undefined,
-          signedAt: recipient.signedAt || undefined,
-          role: recipient.role || undefined,
-          signatureHash:
-            recipient.fields.find((f) => f.signature)?.signature?.signatureHash || undefined,
-        }));
+        const signersInfo = recipients.map((recipient) => {
+          console.log('🔍 HANDLER DEBUG RECIPIENT:', {
+            name: recipient.name,
+            email: recipient.email,
+            dni: recipient.dni,
+            phone: recipient.phone,
+          });
+
+          return {
+            name: recipient.name,
+            email: recipient.email,
+            dni: recipient.dni || undefined,
+            phone: recipient.phone || undefined,
+            signedAt: recipient.signedAt || undefined,
+            role: recipient.role || undefined,
+            signatureHash:
+              recipient.fields.find((f) => f.signature)?.signature?.signatureHash || undefined,
+          };
+        });
+
+        console.log('🔍 HANDLER SIGNERS INFO FINAL:', signersInfo);
 
         const customCertificationPage = await addCertificationPage({
           documentId: document.id,

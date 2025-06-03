@@ -135,6 +135,8 @@ export const updateTemplateRecipients = async ({
           data: {
             name: mergedRecipient.name,
             email: mergedRecipient.email,
+            phone: mergedRecipient.phone,
+            dni: mergedRecipient.dni,
             role: mergedRecipient.role,
             signingOrder: mergedRecipient.signingOrder,
             templateId,

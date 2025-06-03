@@ -150,6 +150,8 @@ export const updateDocumentRecipients = async ({
           data: {
             name: mergedRecipient.name,
             email: mergedRecipient.email,
+            phone: mergedRecipient.phone,
+            dni: mergedRecipient.dni,
             role: mergedRecipient.role,
             signingOrder: mergedRecipient.signingOrder,
             documentId,
@@ -216,6 +218,8 @@ type RecipientData = {
   id: number;
   email?: string;
   name?: string;
+  phone?: string | null;
+  dni?: string | null;
   role?: RecipientRole;
   signingOrder?: number | null;
   accessAuth?: TRecipientAccessAuthTypes | null;
@@ -231,6 +235,8 @@ const hasRecipientBeenChanged = (recipient: Recipient, newRecipientData: Recipie
   return (
     recipient.email !== newRecipientData.email ||
     recipient.name !== newRecipientData.name ||
+    recipient.phone !== (newRecipientData.phone || null) ||
+    recipient.dni !== (newRecipientData.dni || null) ||
     recipient.role !== newRecipientData.role ||
     recipient.signingOrder !== newRecipientData.signingOrder ||
     authOptions.accessAuth !== newRecipientAccessAuth ||

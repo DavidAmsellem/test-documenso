@@ -45,11 +45,20 @@ export const sealDocument = async ({
   const document = await prisma.document.findFirstOrThrow({
     where: {
       id: documentId,
+      status: DocumentStatus.COMPLETED,
     },
     include: {
       documentData: true,
       documentMeta: true,
-      recipients: true,
+      recipients: {
+        include: {
+          fields: {
+            include: {
+              signature: true,
+            },
+          },
+        },
+      },
       team: {
         select: {
           name: true,
@@ -62,6 +71,16 @@ export const sealDocument = async ({
       },
     },
   });
+
+  console.log(
+    '🔍 DOCUMENT RECIPIENTS FROM DB:',
+    document.recipients.map((r) => ({
+      name: r.name,
+      email: r.email,
+      phone: r.phone,
+      dni: r.dni,
+    })),
+  );
 
   const { documentData } = document;
 
@@ -177,16 +196,28 @@ export const sealDocument = async ({
       });
 
       // Preparar información de los firmantes para la certificación
-      const signersInfo = recipients.map((recipient) => ({
-        name: recipient.name,
-        email: recipient.email,
-        dni: recipient.dni || undefined,
-        phone: recipient.phone || undefined,
-        signedAt: recipient.signedAt || undefined,
-        role: recipient.role || undefined,
-        signatureHash:
-          recipient.fields.find((f) => f.signature)?.signature?.signatureHash || undefined,
-      }));
+      const signersInfo = recipients.map((recipient) => {
+        console.log('🔍 DEBUG RECIPIENT DATA:', {
+          name: recipient.name,
+          email: recipient.email,
+          dni: recipient.dni,
+          phone: recipient.phone,
+          hasSignature: recipient.fields.some((f) => f.signature),
+        });
+
+        return {
+          name: recipient.name,
+          email: recipient.email,
+          dni: recipient.dni || undefined,
+          phone: recipient.phone || undefined,
+          signedAt: recipient.signedAt || undefined,
+          role: recipient.role || undefined,
+          signatureHash:
+            recipient.fields.find((f) => f.signature)?.signature?.signatureHash || undefined,
+        };
+      });
+
+      console.log('🔍 SIGNERS INFO FINAL:', signersInfo);
 
       const customCertificationPage = await addCertificationPage({
         documentId: document.id,

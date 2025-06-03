@@ -20,6 +20,8 @@ export interface CreateDocumentRecipientsOptions {
   recipients: {
     email: string;
     name: string;
+    phone?: string | null;
+    dni?: string | null;
     role: RecipientRole;
     signingOrder?: number | null;
     accessAuth?: TRecipientAccessAuthTypes | null;
@@ -119,6 +121,8 @@ export const createDocumentRecipients = async ({
             documentId,
             name: recipient.name,
             email: recipient.email,
+            phone: recipient.phone,
+            dni: recipient.dni,
             role: recipient.role,
             signingOrder: recipient.signingOrder,
             token: nanoid(),

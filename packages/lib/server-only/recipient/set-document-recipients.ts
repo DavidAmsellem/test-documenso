@@ -173,6 +173,8 @@ export const setDocumentRecipients = async ({
           update: {
             name: recipient.name,
             email: recipient.email,
+            phone: recipient.phone,
+            dni: recipient.dni,
             role: recipient.role,
             signingOrder: recipient.signingOrder,
             documentId,
@@ -184,6 +186,8 @@ export const setDocumentRecipients = async ({
           create: {
             name: recipient.name,
             email: recipient.email,
+            phone: recipient.phone,
+            dni: recipient.dni,
             role: recipient.role,
             signingOrder: recipient.signingOrder,
             token: nanoid(),
@@ -306,7 +310,7 @@ export const setDocumentRecipients = async ({
           assetBaseUrl,
         });
 
-        const branding = document.team?.teamGlobalSettings
+        const _branding = document.team?.teamGlobalSettings
           ? teamGlobalSettingsToBranding(document.team.teamGlobalSettings)
           : undefined;
 
@@ -359,6 +363,8 @@ type RecipientData = {
   clientId?: string | null;
   email: string;
   name: string;
+  phone?: string | null;
+  dni?: string | null;
   role: RecipientRole;
   signingOrder?: number | null;
   accessAuth?: TRecipientAccessAuthTypes | null;
@@ -378,6 +384,8 @@ const hasRecipientBeenChanged = (recipient: Recipient, newRecipientData: Recipie
   return (
     recipient.email !== newRecipientData.email ||
     recipient.name !== newRecipientData.name ||
+    recipient.phone !== (newRecipientData.phone || null) ||
+    recipient.dni !== (newRecipientData.dni || null) ||
     recipient.role !== newRecipientData.role ||
     recipient.signingOrder !== newRecipientData.signingOrder ||
     authOptions.accessAuth !== newRecipientAccessAuth ||

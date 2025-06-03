@@ -107,6 +107,7 @@ export const DirectTemplateSigningForm = ({
             fieldId: 1,
             signatureImageAsBase64: value.value?.startsWith('data:') ? value.value : null,
             typedSignature: value.value && !value.value.startsWith('data:') ? value.value : null,
+            signatureHash: null, // Will be generated server-side
           } satisfies Signature;
         }
 

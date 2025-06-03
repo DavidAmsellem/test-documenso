@@ -17,6 +17,7 @@ import type { RequestMetadata } from '../../universal/extract-request-metadata';
 import { getFileServerSide } from '../../universal/upload/get-file.server';
 import { putPdfFileServerSide } from '../../universal/upload/put-file.server';
 import { fieldsContainUnsignedRequiredField } from '../../utils/advanced-fields-helpers';
+import { generateDocumentHash } from '../crypto/signature-hash';
 import { getCertificatePdf } from '../htmltopdf/get-certificate-pdf';
 import { addCertificationPage } from '../pdf/add-certification-page';
 import { addRejectionStampToPdf } from '../pdf/add-rejection-stamp-to-pdf';
@@ -73,6 +74,13 @@ export const sealDocument = async ({
       documentId: document.id,
       role: {
         not: RecipientRole.CC,
+      },
+    },
+    include: {
+      fields: {
+        include: {
+          signature: true,
+        },
       },
     },
   });
@@ -149,18 +157,40 @@ export const sealDocument = async ({
   } // Añadir página de certificación personalizada (nueva funcionalidad)
   if (document.team?.teamGlobalSettings?.includeSigningCertificate ?? true) {
     try {
+      // Collect all signatures with hashes
+      const allSignatures = recipients.flatMap((recipient) =>
+        recipient.fields
+          .filter((field) => field.signature)
+          .map((field) => ({
+            id: field.signature!.id,
+            signatureHash: field.signature!.signatureHash,
+          })),
+      );
+
+      // Generate document hash
+      const documentHash = generateDocumentHash({
+        id: document.id,
+        title: document.title,
+        documentDataId: document.documentDataId,
+        completedAt: document.completedAt,
+        signatures: allSignatures,
+      });
+
       // Preparar información de los firmantes para la certificación
       const signersInfo = recipients.map((recipient) => ({
         name: recipient.name,
         email: recipient.email,
         signedAt: recipient.signedAt || undefined,
         role: recipient.role || undefined,
+        signatureHash:
+          recipient.fields.find((f) => f.signature)?.signature?.signatureHash || undefined,
       }));
 
       const customCertificationPage = await addCertificationPage({
         documentId: document.id,
         documentTitle: document.title,
         companyName: document.team?.name || 'Documenso',
+        documentHash: documentHash,
         signers: signersInfo,
       });
 

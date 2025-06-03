@@ -23,6 +23,7 @@ import {
 } from '../../types/field-meta';
 import type { RequestMetadata } from '../../universal/extract-request-metadata';
 import { createDocumentAuditLogData } from '../../utils/document-audit-logs';
+import { generateSignatureHash } from '../crypto/signature-hash';
 import { validateFieldAuth } from '../document/validate-field-auth';
 
 export type SignFieldWithTokenOptions = {
@@ -219,6 +220,15 @@ export const signFieldWithToken = async ({
     });
 
     if (isSignatureField) {
+      // Generate signature hash
+      const signatureHash = generateSignatureHash({
+        recipientId: field.recipientId,
+        fieldId: field.id,
+        signatureImageAsBase64,
+        typedSignature,
+        created: new Date(),
+      });
+
       const signature = await tx.signature.upsert({
         where: {
           fieldId: field.id,
@@ -228,10 +238,12 @@ export const signFieldWithToken = async ({
           recipientId: field.recipientId,
           signatureImageAsBase64: signatureImageAsBase64,
           typedSignature: typedSignature,
+          signatureHash: signatureHash,
         },
         update: {
           signatureImageAsBase64: signatureImageAsBase64,
           typedSignature: typedSignature,
+          signatureHash: signatureHash,
         },
       });
 

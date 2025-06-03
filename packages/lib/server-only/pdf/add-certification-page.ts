@@ -10,6 +10,7 @@ interface SignerInfo {
   phone?: string; // No disponible en el modelo actual
   signedAt?: Date;
   role?: string;
+  signatureHash?: string; // SHA-512 hash de la firma
 }
 
 /**
@@ -19,6 +20,7 @@ interface CertificationPageOptions {
   documentId: number;
   documentTitle: string;
   companyName?: string;
+  documentHash?: string; // SHA-512 hash del documento
   signers?: SignerInfo[];
 }
 
@@ -32,7 +34,13 @@ export async function addCertificationPage(
   try {
     console.log('📄 Starting certification page creation for document:', options.documentId);
 
-    const { documentId, documentTitle, companyName = 'Documenso', signers = [] } = options;
+    const {
+      documentId,
+      documentTitle,
+      companyName = 'Documenso',
+      documentHash,
+      signers = [],
+    } = options;
 
     // Crear nuevo documento PDF con una página A4
     const pdfDoc = await PDFDocument.create();
@@ -207,6 +215,19 @@ export async function addCertificationPage(
           currentY -= 15;
         }
 
+        // Hash de la firma (si está disponible)
+        if (signer.signatureHash) {
+          page.drawText(`   Hash de Firma: ${signer.signatureHash.substring(0, 32)}...`, {
+            x: 70,
+            y: currentY,
+            size: 9,
+            font: normalFont,
+            color: rgb(0.2, 0.5, 0.2),
+          });
+
+          currentY -= 15;
+        }
+
         currentY -= 10; // Espacio entre firmantes
       });
 
@@ -223,6 +244,57 @@ export async function addCertificationPage(
 
       currentY -= 40;
     }
+
+    // === INFORMACIÓN DE INTEGRIDAD ===
+    page.drawText('Información de Integridad:', {
+      x: 50,
+      y: currentY,
+      size: 14,
+      font: titleFont,
+      color: rgb(0.2, 0.2, 0.2),
+    });
+
+    currentY -= 25;
+
+    // Hash del documento
+    if (documentHash) {
+      page.drawText('Hash del Documento (SHA-512):', {
+        x: 70,
+        y: currentY,
+        size: 11,
+        font: titleFont,
+        color: rgb(0.3, 0.3, 0.3),
+      });
+
+      currentY -= 18;
+
+      // Dividir el hash en líneas para mejor legibilidad
+      const hashLines = [documentHash.substring(0, 64), documentHash.substring(64, 128)];
+
+      hashLines.forEach((line) => {
+        page.drawText(line, {
+          x: 70,
+          y: currentY,
+          size: 8,
+          font: normalFont,
+          color: rgb(0.2, 0.5, 0.2),
+        });
+        currentY -= 12;
+      });
+
+      currentY -= 15;
+    }
+
+    // Información adicional sobre verificación
+    page.drawText('Este hash permite verificar la integridad del documento.', {
+      x: 70,
+      y: currentY,
+      size: 10,
+      font: normalFont,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+
+    currentY -= 30;
 
     // === PIE DE PÁGINA ===
     page.drawText(`Certificado generado por ${companyName}`, {

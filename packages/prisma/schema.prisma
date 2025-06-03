@@ -373,6 +373,7 @@ model Document {
   shareLinks     DocumentShareLink[]
   documentDataId String
   documentMeta   DocumentMeta?
+  documentHash   String? /// SHA-512 hash of the final signed document
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @default(now()) @updatedAt
   completedAt    DateTime?
@@ -563,6 +564,7 @@ model Signature {
   fieldId                Int      @unique
   signatureImageAsBase64 String?
   typedSignature         String?
+  signatureHash          String? /// SHA-512 hash of the signature data for verification
 
   recipient Recipient @relation(fields: [recipientId], references: [id], onDelete: Cascade)
   field     Field     @relation(fields: [fieldId], references: [id], onDelete: Cascade)

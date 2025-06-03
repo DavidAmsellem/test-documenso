@@ -258,6 +258,7 @@ export const EmbedSignDocumentClientPage = ({
           created: new Date(),
           signatureImageAsBase64: signature?.startsWith('data:') ? signature : null,
           typedSignature: signature?.startsWith('data:') ? null : signature,
+          signatureHash: null, // Will be generated server-side
         }}
       />
     );

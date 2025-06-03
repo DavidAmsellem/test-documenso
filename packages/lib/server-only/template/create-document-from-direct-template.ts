@@ -49,6 +49,7 @@ import { env } from '../../utils/env';
 import { renderEmailWithI18N } from '../../utils/render-email-with-i18n';
 import { teamGlobalSettingsToBranding } from '../../utils/team-global-settings-to-branding';
 import { formatDocumentsPath } from '../../utils/teams';
+import { generateSignatureHash } from '../crypto/signature-hash';
 import { sendDocument } from '../document/send-document';
 import { validateFieldAuth } from '../document/validate-field-auth';
 import { triggerWebhook } from '../webhooks/trigger/trigger-webhook';
@@ -436,21 +437,34 @@ export const createDocumentFromDirectTemplate = async ({
               customText: '',
               inserted: true,
               fieldMeta: templateField.fieldMeta || Prisma.JsonNull,
-              signature: {
-                create: {
-                  recipientId: createdDirectRecipient.id,
-                  signatureImageAsBase64: signature.signatureImageAsBase64,
-                  typedSignature: signature.typedSignature,
-                },
-              },
             },
-            include: {
-              signature: true,
+          });
+
+          // Generate signature hash after field is created
+          const signatureHash = generateSignatureHash({
+            recipientId: createdDirectRecipient.id,
+            fieldId: field.id,
+            signatureImageAsBase64: signature.signatureImageAsBase64,
+            typedSignature: signature.typedSignature,
+            created: new Date(),
+          });
+
+          // Create signature with the generated hash
+          const createdSignature = await tx.signature.create({
+            data: {
+              fieldId: field.id,
+              recipientId: createdDirectRecipient.id,
+              signatureImageAsBase64: signature.signatureImageAsBase64,
+              typedSignature: signature.typedSignature,
+              signatureHash: signatureHash,
             },
           });
 
           return {
-            field,
+            field: {
+              ...field,
+              signature: createdSignature,
+            },
             derivedRecipientActionAuth,
           };
         },

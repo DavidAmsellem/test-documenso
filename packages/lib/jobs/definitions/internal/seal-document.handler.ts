@@ -7,6 +7,7 @@ import { prisma } from '@documenso/prisma';
 import { signPdf } from '@documenso/signing';
 
 import { AppError, AppErrorCode } from '../../../errors/app-error';
+import { generateDocumentHash } from '../../../server-only/crypto/signature-hash';
 import { sendCompletedEmail } from '../../../server-only/document/send-completed-email';
 import PostHogServerClient from '../../../server-only/feature-flags/get-post-hog-server-client';
 import { getCertificatePdf } from '../../../server-only/htmltopdf/get-certificate-pdf';
@@ -101,6 +102,13 @@ export const run = async ({
         not: RecipientRole.CC,
       },
     },
+    include: {
+      fields: {
+        include: {
+          signature: true,
+        },
+      },
+    },
   });
 
   // Determine if the document has been rejected by checking if any recipient has rejected it
@@ -183,18 +191,40 @@ export const run = async ({
     // Añadir página de certificación personalizada (nueva funcionalidad)
     if (document.team?.teamGlobalSettings?.includeSigningCertificate ?? true) {
       try {
+        // Collect all signatures with hashes
+        const allSignatures = recipients.flatMap((recipient) =>
+          recipient.fields
+            .filter((field) => field.signature)
+            .map((field) => ({
+              id: field.signature!.id,
+              signatureHash: field.signature!.signatureHash,
+            })),
+        );
+
+        // Generate document hash
+        const documentHash = generateDocumentHash({
+          id: document.id,
+          title: document.title,
+          documentDataId: document.documentDataId,
+          completedAt: document.completedAt,
+          signatures: allSignatures,
+        });
+
         // Preparar información de los firmantes para la certificación
         const signersInfo = recipients.map((recipient) => ({
           name: recipient.name,
           email: recipient.email,
           signedAt: recipient.signedAt || undefined,
           role: recipient.role || undefined,
+          signatureHash:
+            recipient.fields.find((f) => f.signature)?.signature?.signatureHash || undefined,
         }));
 
         const customCertificationPage = await addCertificationPage({
           documentId: document.id,
           documentTitle: document.title,
           companyName: document.team?.name || 'Documenso',
+          documentHash: documentHash,
           signers: signersInfo,
         });
 

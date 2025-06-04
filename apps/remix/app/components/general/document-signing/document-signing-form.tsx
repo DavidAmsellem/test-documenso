@@ -238,6 +238,17 @@ export const DocumentSigningForm = ({
                         ? { name: nextRecipient.name, email: nextRecipient.email }
                         : undefined
                     }
+                    recipientInfo={{
+                      name: recipient.name,
+                      email: recipient.email,
+                      phone: recipient.phone,
+                      dni: recipient.dni,
+                    }}
+                    documentInfo={{
+                      createdAt: document.createdAt,
+                      totalRecipients: allRecipients.length,
+                      signingOrder: recipient.signingOrder || 1,
+                    }}
                   />
                 </div>
               </div>
@@ -420,6 +431,17 @@ export const DocumentSigningForm = ({
                         ? { name: nextRecipient.name, email: nextRecipient.email }
                         : undefined
                     }
+                    recipientInfo={{
+                      name: recipient.name,
+                      email: recipient.email,
+                      phone: recipient.phone,
+                      dni: recipient.dni,
+                    }}
+                    documentInfo={{
+                      createdAt: document.createdAt,
+                      totalRecipients: allRecipients.length,
+                      signingOrder: recipient.signingOrder || 1,
+                    }}
                   />
                 </div>
               </div>

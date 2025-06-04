@@ -9,6 +9,7 @@ import { match } from 'ts-pattern';
 import { z } from 'zod';
 
 import { fieldsContainUnsignedRequiredField } from '@documenso/lib/utils/advanced-fields-helpers';
+import { Badge } from '@documenso/ui/primitives/badge';
 import { Button } from '@documenso/ui/primitives/button';
 import {
   Dialog,
@@ -26,6 +27,7 @@ import {
   FormMessage,
 } from '@documenso/ui/primitives/form/form';
 import { Input } from '@documenso/ui/primitives/input';
+import { Separator } from '@documenso/ui/primitives/separator';
 
 import { DocumentSigningDisclosure } from '~/components/general/document-signing/document-signing-disclosure';
 
@@ -41,6 +43,20 @@ export type DocumentSigningCompleteDialogProps = {
   defaultNextSigner?: {
     name: string;
     email: string;
+  };
+  // Nuevas props para mostrar más información
+  recipientInfo?: {
+    name: string;
+    email: string;
+    phone?: string | null;
+    dni?: string | null;
+  };
+  documentInfo?: {
+    createdAt?: Date;
+    totalPages?: number;
+    fileSize?: string;
+    totalRecipients?: number;
+    signingOrder?: number;
   };
 };
 
@@ -61,6 +77,8 @@ export const DocumentSigningCompleteDialog = ({
   disabled = false,
   allowDictateNextSigner = false,
   defaultNextSigner,
+  recipientInfo,
+  documentInfo,
 }: DocumentSigningCompleteDialogProps) => {
   const [showDialog, setShowDialog] = useState(false);
   const [isEditingNextSigner, setIsEditingNextSigner] = useState(false);
@@ -74,6 +92,10 @@ export const DocumentSigningCompleteDialog = ({
   });
 
   const isComplete = useMemo(() => !fieldsContainUnsignedRequiredField(fields), [fields]);
+
+  // Contar campos completados vs. totales
+  const completedFields = fields.filter((field) => field.inserted).length;
+  const totalFields = fields.length;
 
   const handleOpenChange = (open: boolean) => {
     if (form.formState.isSubmitting || !isComplete) {
@@ -129,80 +151,175 @@ export const DocumentSigningCompleteDialog = ({
         </Button>
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="max-w-lg">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onFormSubmit)}>
             <fieldset disabled={form.formState.isSubmitting} className="border-none p-0">
               <DialogTitle>
                 <div className="text-foreground text-xl font-semibold">
                   {match(role)
-                    .with(RecipientRole.VIEWER, () => <Trans>Complete Viewing</Trans>)
-                    .with(RecipientRole.SIGNER, () => <Trans>Complete Signing</Trans>)
-                    .with(RecipientRole.APPROVER, () => <Trans>Complete Approval</Trans>)
-                    .with(RecipientRole.CC, () => <Trans>Complete Viewing</Trans>)
-                    .with(RecipientRole.ASSISTANT, () => <Trans>Complete Assisting</Trans>)
+                    .with(RecipientRole.VIEWER, () => 'Completar Visualización')
+                    .with(RecipientRole.SIGNER, () => 'Completar Firmado')
+                    .with(RecipientRole.APPROVER, () => 'Completar Aprobación')
+                    .with(RecipientRole.CC, () => 'Completar Visualización')
+                    .with(RecipientRole.ASSISTANT, () => 'Completar Asistencia')
                     .exhaustive()}
                 </div>
               </DialogTitle>
 
-              <div className="text-muted-foreground max-w-[50ch]">
-                {match(role)
-                  .with(RecipientRole.VIEWER, () => (
-                    <span>
-                      <Trans>
-                        <span className="inline-flex flex-wrap">
-                          You are about to complete viewing "
-                          <span className="inline-block max-w-[11rem] truncate align-baseline">
-                            {documentTitle}
-                          </span>
-                          ".
+              {/* Información detallada del documento */}
+              <div className="mt-4 space-y-4">
+                {/* Información básica */}
+                <div className="text-base text-black">
+                  {match(role)
+                    .with(RecipientRole.VIEWER, () => (
+                      <span>
+                        Está a punto de completar la visualización de "
+                        <span className="font-semibold text-black">{documentTitle}</span>
+                        ".
+                        <br />
+                        <span className="font-medium">¿Está seguro?</span>
+                      </span>
+                    ))
+                    .with(RecipientRole.SIGNER, () => (
+                      <span>
+                        Está a punto de completar la firma de "
+                        <span className="font-semibold text-black">{documentTitle}</span>
+                        ".
+                        <br />
+                        <span className="font-medium">¿Está seguro?</span>
+                      </span>
+                    ))
+                    .with(RecipientRole.APPROVER, () => (
+                      <span>
+                        Está a punto de completar la aprobación de "
+                        <span className="font-semibold text-black">{documentTitle}</span>
+                        ".
+                        <br />
+                        <span className="font-medium">¿Está seguro?</span>
+                      </span>
+                    ))
+                    .otherwise(() => (
+                      <span>
+                        Está a punto de completar la visualización de "
+                        <span className="font-semibold text-black">{documentTitle}</span>
+                        ".
+                        <br />
+                        <span className="font-medium">¿Está seguro?</span>
+                      </span>
+                    ))}
+                </div>
+
+                {/* Información detallada del documento */}
+                <div className="space-y-4 rounded-xl border border-gray-200 bg-gray-50 p-5">
+                  <h4 className="flex items-center text-base font-bold text-black">
+                    📄 Información del Documento
+                  </h4>
+
+                  <div className="space-y-3 text-sm">
+                    <div className="flex items-start justify-between">
+                      <span className="font-medium text-gray-700">Documento:</span>
+                      <span className="max-w-[200px] text-right font-semibold text-black">
+                        {documentTitle}
+                      </span>
+                    </div>
+
+                    {documentInfo?.createdAt && (
+                      <div className="flex justify-between">
+                        <span className="font-medium text-gray-700">Fecha de creación:</span>
+                        <span className="font-semibold text-black">
+                          {new Date(documentInfo.createdAt).toLocaleDateString('es-ES')}
                         </span>
-                        <br /> Are you sure?
-                      </Trans>
-                    </span>
-                  ))
-                  .with(RecipientRole.SIGNER, () => (
-                    <span>
-                      <Trans>
-                        <span className="inline-flex flex-wrap">
-                          You are about to complete signing "
-                          <span className="inline-block max-w-[11rem] truncate align-baseline">
-                            {documentTitle}
-                          </span>
-                          ".
+                      </div>
+                    )}
+
+                    {documentInfo?.totalPages && (
+                      <div className="flex justify-between">
+                        <span className="font-medium text-gray-700">Páginas:</span>
+                        <span className="font-semibold text-black">{documentInfo.totalPages}</span>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-gray-700">Campos por completar:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-black">
+                          {completedFields}/{totalFields}
                         </span>
-                        <br /> Are you sure?
-                      </Trans>
-                    </span>
-                  ))
-                  .with(RecipientRole.APPROVER, () => (
-                    <span>
-                      <Trans>
-                        <span className="inline-flex flex-wrap">
-                          You are about to complete approving{' '}
-                          <span className="inline-block max-w-[11rem] truncate align-baseline">
-                            "{documentTitle}"
-                          </span>
-                          .
+                        {completedFields === totalFields && (
+                          <Badge
+                            variant="default"
+                            className="bg-green-500 px-2 py-1 text-xs font-medium text-white"
+                          >
+                            ✓ Completo
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+
+                    {documentInfo?.totalRecipients && documentInfo?.signingOrder && (
+                      <div className="flex justify-between">
+                        <span className="font-medium text-gray-700">Orden de firma:</span>
+                        <span className="font-semibold text-black">
+                          {documentInfo.signingOrder} de {documentInfo.totalRecipients}
                         </span>
-                        <br /> Are you sure?
-                      </Trans>
-                    </span>
-                  ))
-                  .otherwise(() => (
-                    <span>
-                      <Trans>
-                        <span className="inline-flex flex-wrap">
-                          You are about to complete viewing "
-                          <span className="inline-block max-w-[11rem] truncate align-baseline">
-                            {documentTitle}
-                          </span>
-                          ".
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Información del firmante */}
+                {recipientInfo && (
+                  <div className="space-y-4 rounded-xl border border-blue-200 bg-blue-50 p-5">
+                    <h4 className="flex items-center text-base font-bold text-black">
+                      👤 Información del Firmante
+                    </h4>
+
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between">
+                        <span className="font-medium text-gray-700">Nombre:</span>
+                        <span className="font-semibold text-black">{recipientInfo.name}</span>
+                      </div>
+
+                      <div className="flex items-start justify-between">
+                        <span className="font-medium text-gray-700">Correo electrónico:</span>
+                        <span className="max-w-[200px] text-right font-semibold text-black">
+                          {recipientInfo.email}
                         </span>
-                        <br /> Are you sure?
-                      </Trans>
-                    </span>
-                  ))}
+                      </div>
+
+                      {recipientInfo.phone && (
+                        <div className="flex justify-between">
+                          <span className="font-medium text-gray-700">Teléfono:</span>
+                          <span className="font-semibold text-black">{recipientInfo.phone}</span>
+                        </div>
+                      )}
+
+                      {recipientInfo.dni && (
+                        <div className="flex justify-between">
+                          <span className="font-medium text-gray-700">DNI:</span>
+                          <span className="font-semibold text-black">{recipientInfo.dni}</span>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-gray-700">Rol:</span>
+                        <Badge
+                          variant="secondary"
+                          className="px-3 py-1 text-xs font-medium text-black"
+                        >
+                          {match(role)
+                            .with(RecipientRole.VIEWER, () => 'Visualizador')
+                            .with(RecipientRole.SIGNER, () => 'Firmante')
+                            .with(RecipientRole.APPROVER, () => 'Aprobador')
+                            .with(RecipientRole.CC, () => 'Copia')
+                            .with(RecipientRole.ASSISTANT, () => 'Asistente')
+                            .exhaustive()}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {allowDictateNextSigner && (
@@ -275,6 +392,8 @@ export const DocumentSigningCompleteDialog = ({
                 </div>
               )}
 
+              <Separator className="my-4" />
+
               <DocumentSigningDisclosure className="mt-4" />
 
               <DialogFooter className="mt-4">
@@ -286,7 +405,7 @@ export const DocumentSigningCompleteDialog = ({
                     onClick={() => setShowDialog(false)}
                     disabled={form.formState.isSubmitting}
                   >
-                    <Trans>Cancel</Trans>
+                    Cancelar
                   </Button>
 
                   <Button
@@ -296,11 +415,11 @@ export const DocumentSigningCompleteDialog = ({
                     loading={form.formState.isSubmitting}
                   >
                     {match(role)
-                      .with(RecipientRole.VIEWER, () => <Trans>Mark as Viewed</Trans>)
-                      .with(RecipientRole.SIGNER, () => <Trans>Sign</Trans>)
-                      .with(RecipientRole.APPROVER, () => <Trans>Approve</Trans>)
-                      .with(RecipientRole.CC, () => <Trans>Mark as Viewed</Trans>)
-                      .with(RecipientRole.ASSISTANT, () => <Trans>Complete</Trans>)
+                      .with(RecipientRole.VIEWER, () => 'Marcar como Visto')
+                      .with(RecipientRole.SIGNER, () => 'Firmar')
+                      .with(RecipientRole.APPROVER, () => 'Aprobar')
+                      .with(RecipientRole.CC, () => 'Marcar como Visto')
+                      .with(RecipientRole.ASSISTANT, () => 'Completar')
                       .exhaustive()}
                   </Button>
                 </div>

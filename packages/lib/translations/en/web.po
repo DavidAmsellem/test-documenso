@@ -1230,6 +1230,7 @@ msgstr "Approve Document"
 msgid "Approved"
 msgstr "Approved"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 msgid "Approver"
 msgstr "Approver"
@@ -1285,6 +1286,7 @@ msgstr "Assist Document"
 msgid "Assist with signing"
 msgstr "Assist with signing"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 msgid "Assistant"
 msgstr "Assistant"
@@ -1546,6 +1548,7 @@ msgstr "Cannot remove signer"
 msgid "Cc"
 msgstr "Cc"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 #: packages/lib/constants/recipient-roles.ts
 msgid "CC"
@@ -1668,6 +1671,7 @@ msgstr "Close"
 msgid "Communication"
 msgstr "Communication"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/forms/signup.tsx
@@ -2060,6 +2064,10 @@ msgstr "Created on"
 msgid "Created on {0}"
 msgstr "Created on {0}"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Created:"
+msgstr "Created:"
+
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "CSV Structure"
 msgstr "CSV Structure"
@@ -2342,6 +2350,10 @@ msgstr "DNI is required"
 msgid "DNI must be 50 characters or less"
 msgstr "DNI must be 50 characters or less"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "DNI:"
+msgstr "DNI:"
+
 #: apps/remix/app/components/dialogs/template-delete-dialog.tsx
 msgid "Do you want to delete this template?"
 msgstr "Do you want to delete this template?"
@@ -2495,6 +2507,10 @@ msgstr "Document ID"
 msgid "Document inbox"
 msgstr "Document inbox"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Document Information"
+msgstr "Document Information"
+
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "Document is already uploaded"
 msgstr "Document is already uploaded"
@@ -2617,6 +2633,10 @@ msgstr "Document visibility updated"
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Document will be permanently deleted"
 msgstr "Document will be permanently deleted"
+
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Document:"
+msgstr "Document:"
 
 #: apps/remix/app/routes/_profile+/p.$url.tsx
 #: apps/remix/app/routes/_authenticated+/documents.f.$folderId._index.tsx
@@ -2852,6 +2872,10 @@ msgstr "Email verification has been removed"
 #: apps/remix/app/components/general/teams/team-email-dropdown.tsx
 msgid "Email verification has been resent"
 msgstr "Email verification has been resent"
+
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Email:"
+msgstr "Email:"
 
 #: packages/ui/primitives/document-flow/add-fields.tsx
 msgid "Empty field"
@@ -3112,6 +3136,10 @@ msgstr "Field unsigned"
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
 msgid "Fields"
 msgstr "Fields"
+
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Fields to complete:"
+msgstr "Fields to complete:"
 
 #: apps/remix/app/components/general/legacy-field-warning-popover.tsx
 msgid "Fields updated"
@@ -3830,6 +3858,10 @@ msgstr "My templates"
 msgid "Name"
 msgstr "Name"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Name:"
+msgstr "Name:"
+
 #: apps/remix/app/routes/_recipient+/sign.$token+/complete.tsx
 msgid "Need to sign documents?"
 msgstr "Need to sign documents?"
@@ -4090,6 +4122,10 @@ msgstr "Page {0} of {1}"
 msgid "Page {0} of {numPages}"
 msgstr "Page {0} of {numPages}"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Pages:"
+msgstr "Pages:"
+
 #: apps/remix/app/components/tables/team-settings-billing-invoices-table.tsx
 msgid "Paid"
 msgstr "Paid"
@@ -4227,6 +4263,10 @@ msgstr "Phone is required"
 #: packages/ui/primitives/document-flow/add-signers.types.ts
 msgid "Phone must be 50 characters or less"
 msgstr "Phone must be 50 characters or less"
+
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Phone:"
+msgstr "Phone:"
 
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/checkbox-field.tsx
 msgid "Pick a number"
@@ -4781,6 +4821,10 @@ msgstr "Revoke access"
 msgid "Role"
 msgstr "Role"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Role:"
+msgstr "Role:"
+
 #: apps/remix/app/routes/_authenticated+/admin+/users.$id.tsx
 #: apps/remix/app/components/tables/admin-dashboard-users-table.tsx
 msgid "Roles"
@@ -5167,6 +5211,7 @@ msgstr "Signatures will appear once the document has been completed"
 msgid "Signed"
 msgstr "Signed"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 msgid "Signer"
 msgstr "Signer"
@@ -5174,6 +5219,10 @@ msgstr "Signer"
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
 msgid "Signer Events"
 msgstr "Signer Events"
+
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Signer Information"
+msgstr "Signer Information"
 
 #: packages/lib/constants/recipient-roles.ts
 msgid "Signers"
@@ -5222,6 +5271,10 @@ msgstr "Signing links have been generated for this document."
 #: packages/ui/primitives/document-flow/add-signers.tsx
 msgid "Signing order is enabled."
 msgstr "Signing order is enabled."
+
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
+msgid "Signing order:"
+msgstr "Signing order:"
 
 #: apps/remix/app/routes/_authenticated+/admin+/leaderboard.tsx
 #: apps/remix/app/components/tables/admin-leaderboard-table.tsx
@@ -6851,6 +6904,7 @@ msgstr "View teams"
 msgid "Viewed"
 msgstr "Viewed"
 
+#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 msgid "Viewer"
 msgstr "Viewer"

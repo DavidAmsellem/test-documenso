@@ -489,19 +489,6 @@ msgstr "<0>Escrito</0> - Una firma que se escribe usando un teclado."
 msgid "<0>Uploaded</0> - A signature that is uploaded from a file."
 msgstr "<0>Cargado</0> - Una firma que se carga desde un archivo."
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "<0>You are about to complete approving <1>\"{documentTitle}\"</1>.</0><2/> Are you sure?"
-msgstr "<0>Está a punto de completar la aprobación de <1>\"{documentTitle}\"</1>.</0><2/> ¿Está seguro?"
-
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "<0>You are about to complete signing \"<1>{documentTitle}</1>\".</0><2/> Are you sure?"
-msgstr "<0>Está a punto de completar la firma de \"<1>{documentTitle}</1>\".</0><2/> ¿Está seguro?"
-
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "<0>You are about to complete viewing \"<1>{documentTitle}</1>\".</0><2/> Are you sure?"
-msgstr "<0>Está a punto de completar la visualización de \"<1>{documentTitle}</1>\".</0><2/> ¿Está seguro?"
-
 #: apps/remix/app/components/forms/token.tsx
 msgid "1 month"
 msgstr "1 mes"
@@ -1219,7 +1206,6 @@ msgstr "Versión de la Aplicación"
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: packages/lib/constants/recipient-roles.ts
 msgid "Approve"
@@ -1235,7 +1221,6 @@ msgstr "Aprobar Documento"
 msgid "Approved"
 msgstr "Aprobado"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 msgid "Approver"
 msgstr "Aprobador"
@@ -1291,7 +1276,6 @@ msgstr "Asistir Documento"
 msgid "Assist with signing"
 msgstr "Asistir con la firma"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 msgid "Assistant"
 msgstr "Asistente"
@@ -1350,7 +1334,6 @@ msgstr "Avatar actualizado"
 msgid "Awaiting email confirmation"
 msgstr "Esperando confirmación de correo electrónico"
 
-#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
 #: apps/remix/app/components/general/direct-template/direct-template-signing-form.tsx
 #: apps/remix/app/components/forms/signup.tsx
 #: apps/remix/app/components/embed/authoring/configure-fields-view.tsx
@@ -1494,7 +1477,6 @@ msgstr "Puede preparar"
 #: apps/remix/app/components/general/document-signing/document-signing-name-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-form.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-form.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-passkey.tsx
@@ -1553,7 +1535,6 @@ msgstr "No se puede eliminar el firmante"
 msgid "Cc"
 msgstr "Copia visible"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 #: packages/lib/constants/recipient-roles.ts
 msgid "CC"
@@ -1565,6 +1546,10 @@ msgstr "Con copia"
 
 #: packages/lib/constants/recipient-roles.ts
 msgid "Ccers"
+msgstr ""
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Change Number"
 msgstr ""
 
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/text-field.tsx
@@ -1677,38 +1662,19 @@ msgid "Communication"
 msgstr ""
 
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/forms/signup.tsx
 #: apps/remix/app/components/embed/embed-document-signing-page.tsx
 #: apps/remix/app/components/embed/embed-direct-template-client-page.tsx
 msgid "Complete"
 msgstr "Completo"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Complete Approval"
-msgstr "Completar Aprobación"
-
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Complete Assisting"
-msgstr "Completar Asistencia"
-
 #: apps/remix/app/components/dialogs/assistant-confirmation-dialog.tsx
 msgid "Complete Document"
 msgstr "Documento Completo"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Complete Signing"
-msgstr "Completar Firmado"
-
 #: apps/remix/app/components/general/document-signing/document-signing-form.tsx
 msgid "Complete the fields for the following signers. Once reviewed, they will inform you if any modifications are needed."
 msgstr "Completa los campos para los siguientes firmantes. Una vez revisados, te informarán si se necesitan modificaciones."
-
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Complete Viewing"
-msgstr "Completar Visualización"
 
 #: apps/remix/app/components/general/stack-avatars-with-tooltip.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
@@ -2069,10 +2035,6 @@ msgstr "Creado el"
 msgid "Created on {0}"
 msgstr "Creado el {0}"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Created:"
-msgstr ""
-
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "CSV Structure"
 msgstr "Estructura CSV"
@@ -2355,10 +2317,6 @@ msgstr ""
 msgid "DNI must be 50 characters or less"
 msgstr ""
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "DNI:"
-msgstr ""
-
 #: apps/remix/app/components/dialogs/template-delete-dialog.tsx
 msgid "Do you want to delete this template?"
 msgstr "¿Desea eliminar esta plantilla?"
@@ -2512,10 +2470,6 @@ msgstr "ID del documento"
 msgid "Document inbox"
 msgstr "Bandeja de documentos"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Document Information"
-msgstr ""
-
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "Document is already uploaded"
 msgstr ""
@@ -2638,10 +2592,6 @@ msgstr "Visibilidad del documento actualizada"
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Document will be permanently deleted"
 msgstr "El documento será eliminado permanentemente"
-
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Document:"
-msgstr ""
 
 #: apps/remix/app/routes/_profile+/p.$url.tsx
 #: apps/remix/app/routes/_authenticated+/documents.f.$folderId._index.tsx
@@ -2878,10 +2828,6 @@ msgstr "La verificación de correo electrónico ha sido eliminada"
 msgid "Email verification has been resent"
 msgstr "La verificación de correo electrónico ha sido reenviada"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Email:"
-msgstr ""
-
 #: packages/ui/primitives/document-flow/add-fields.tsx
 msgid "Empty field"
 msgstr "Campo vacío"
@@ -2940,6 +2886,10 @@ msgstr "Documento Adjunto"
 msgid "Ends On"
 msgstr "Termina en"
 
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Enter Verification Code"
+msgstr ""
+
 #: apps/remix/app/components/forms/team-branding-preferences-form.tsx
 msgid "Enter your brand details"
 msgstr "Ingresa los detalles de tu marca"
@@ -2963,7 +2913,7 @@ msgid "Enter your phone number to receive a verification code to {0} this {1}."
 msgstr ""
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
-msgid "Enter your phone number to receive a verification code to view this document."
+msgid "Enter your phone number to receive a verification code to view this document securely."
 msgstr ""
 
 #: apps/remix/app/components/general/document-signing/document-signing-text-field.tsx
@@ -3003,7 +2953,6 @@ msgstr "Ingresa tu texto aquí"
 #: apps/remix/app/components/general/document-signing/document-signing-checkbox-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-checkbox-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
@@ -3141,10 +3090,6 @@ msgstr "Campo no firmado"
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
 msgid "Fields"
 msgstr "Campos"
-
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Fields to complete:"
-msgstr ""
 
 #: apps/remix/app/components/general/legacy-field-warning-popover.tsx
 msgid "Fields updated"
@@ -3399,6 +3344,10 @@ msgstr "Documentos en bandeja de entrada"
 #: apps/remix/app/components/forms/team-document-preferences-form.tsx
 msgid "Include the Signing Certificate in the Document"
 msgstr "Incluir el certificado de firma en el documento"
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Include your country code (e.g., +1 for US, +34 for Spain)"
+msgstr ""
 
 #: apps/remix/app/components/general/template/template-page-view-information.tsx
 #: apps/remix/app/components/general/document/document-page-view-information.tsx
@@ -3727,11 +3676,6 @@ msgstr "Gerente"
 msgid "Mark as viewed"
 msgstr "Marcar como visto"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Mark as Viewed"
-msgstr "Marcar como visto"
-
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "MAU (created document)"
 msgstr "MAU (documento creado)"
@@ -3862,10 +3806,6 @@ msgstr "Mis plantillas"
 #: packages/ui/primitives/document-flow/add-fields.tsx
 msgid "Name"
 msgstr "Nombre"
-
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Name:"
-msgstr ""
 
 #: apps/remix/app/routes/_recipient+/sign.$token+/complete.tsx
 msgid "Need to sign documents?"
@@ -4127,10 +4067,6 @@ msgstr "Página {0} de {1}"
 msgid "Page {0} of {numPages}"
 msgstr "Página {0} de {numPages}"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Pages:"
-msgstr ""
-
 #: apps/remix/app/components/tables/team-settings-billing-invoices-table.tsx
 msgid "Paid"
 msgstr "Pagado"
@@ -4269,8 +4205,8 @@ msgstr ""
 msgid "Phone must be 50 characters or less"
 msgstr ""
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Phone:"
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Phone Number"
 msgstr ""
 
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/checkbox-field.tsx
@@ -4748,6 +4684,10 @@ msgstr "Reenviar correo de confirmación"
 msgid "Resend verification"
 msgstr "Reenviar verificación"
 
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Resending..."
+msgstr ""
+
 #: apps/remix/app/components/forms/team-update-form.tsx
 #: apps/remix/app/components/forms/public-profile-form.tsx
 msgid "Reset"
@@ -4826,8 +4766,9 @@ msgstr "Revocar acceso"
 msgid "Role"
 msgstr "Rol"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Role:"
+#. placeholder {0}: recipient.role
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Role: {0}"
 msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/admin+/users.$id.tsx
@@ -4885,6 +4826,14 @@ msgstr "Buscar idiomas..."
 #: apps/remix/app/components/dialogs/webhook-create-dialog.tsx
 msgid "Secret"
 msgstr "Secreto"
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Secure Document Authentication"
+msgstr ""
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Secure your digital signature with SMS authentication"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/settings+/security._index.tsx
 #: apps/remix/app/components/general/settings-nav-mobile.tsx
@@ -4955,10 +4904,6 @@ msgstr ""
 msgid "Send"
 msgstr "Enviar"
 
-#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
-msgid "Send Code"
-msgstr ""
-
 #: apps/remix/app/components/forms/send-confirmation-email.tsx
 msgid "Send confirmation email"
 msgstr "Enviar correo de confirmación"
@@ -5015,9 +4960,17 @@ msgstr "Enviar correo electrónico de solicitud de firma de destinatario"
 msgid "Send reminder"
 msgstr "Enviar recordatorio"
 
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Send Verification Code"
+msgstr ""
+
 #: apps/remix/app/components/tables/documents-table.tsx
 msgid "Sender"
 msgstr "Remitente"
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Sending Code..."
+msgstr ""
 
 #: apps/remix/app/components/forms/forgot-password.tsx
 msgid "Sending Reset Email..."
@@ -5105,7 +5058,6 @@ msgstr "Mostrar plantillas en el perfil público de tu equipo para que tu audien
 #: apps/remix/app/components/general/user-profile-skeleton.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-signature-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-name-field.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-2fa.tsx
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
@@ -5216,7 +5168,6 @@ msgstr "Las firmas aparecerán una vez que el documento se haya completado"
 msgid "Signed"
 msgstr "Firmado"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 msgid "Signer"
 msgstr "Firmante"
@@ -5224,10 +5175,6 @@ msgstr "Firmante"
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
 msgid "Signer Events"
 msgstr "Eventos del Firmante"
-
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Signer Information"
-msgstr ""
 
 #: packages/lib/constants/recipient-roles.ts
 msgid "Signers"
@@ -5277,10 +5224,6 @@ msgstr "Se han generado enlaces de firma para este documento."
 msgid "Signing order is enabled."
 msgstr "El orden de firma está habilitado."
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
-msgid "Signing order:"
-msgstr ""
-
 #: apps/remix/app/routes/_authenticated+/admin+/leaderboard.tsx
 #: apps/remix/app/components/tables/admin-leaderboard-table.tsx
 msgid "Signing Volume"
@@ -5306,6 +5249,10 @@ msgstr "Configuraciones del sitio"
 
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
 msgid "SMS Re-Authentication"
+msgstr ""
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "SMS Verification Required"
 msgstr ""
 
 #: packages/ui/primitives/document-flow/missing-signature-field-dialog.tsx
@@ -6541,7 +6488,6 @@ msgid "Unable to sign in"
 msgstr "No se pudo iniciar sesión"
 
 #: apps/remix/app/routes/_authenticated+/settings+/tokens.tsx
-#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-2fa.tsx
 msgid "Unauthorized"
 msgstr "No autorizado"
@@ -6787,6 +6733,14 @@ msgstr "Validación"
 msgid "Value"
 msgstr "Valor"
 
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Verification Code"
+msgstr ""
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Verification code sent to <0>{phoneNumber}</0>"
+msgstr ""
+
 #: apps/remix/app/components/general/verify-email-banner.tsx
 msgid "Verification Email Sent"
 msgstr "Correo Electrónico de Verificación Enviado"
@@ -6796,7 +6750,12 @@ msgid "Verification email sent successfully."
 msgstr "Correo electrónico de verificación enviado con éxito."
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
-msgid "Verify"
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Verification Failed"
+msgstr ""
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Verify & Continue"
 msgstr ""
 
 #: apps/remix/app/components/general/verify-email-banner.tsx
@@ -6818,6 +6777,10 @@ msgstr "Verifica tu correo electrónico para subir documentos."
 #: packages/email/templates/confirm-team-email.tsx
 msgid "Verify your team email address"
 msgstr "Verifica tu dirección de correo electrónico del equipo"
+
+#: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
+msgid "Verifying..."
+msgstr ""
 
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/audit-log.tsx
 msgid "Version History"
@@ -6909,7 +6872,6 @@ msgstr "Ver equipos"
 msgid "Viewed"
 msgstr "Visto"
 
-#: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: packages/lib/constants/recipient-roles.ts
 msgid "Viewer"
 msgstr "Visor"
@@ -7191,7 +7153,7 @@ msgid "We've changed your password as you asked. You can now sign in with your n
 msgstr "Hemos cambiado tu contraseña como solicitaste. Ahora puedes iniciar sesión con tu nueva contraseña."
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-sms.tsx
-msgid "We've sent a 6-digit verification code to {phoneNumber}. Enter the code below to continue."
+msgid "We've sent a 6-digit code to your phone"
 msgstr ""
 
 #: apps/remix/app/components/general/verify-email-banner.tsx

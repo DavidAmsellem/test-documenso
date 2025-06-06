@@ -3,16 +3,7 @@ import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans } from '@lingui/react/macro';
 import { RecipientRole } from '@prisma/client';
-import {
-  CheckCircle,
-  FileText,
-  Mail,
-  MessageSquare,
-  Phone,
-  RefreshCw,
-  Shield,
-  User,
-} from 'lucide-react';
+import { CheckCircle, Mail, MessageSquare, Phone, RefreshCw, Shield, User } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -78,7 +69,7 @@ export const DocumentSigningAuthSMS = ({
   onOpenChange,
   onReauthFormSubmit,
 }: DocumentSigningAuthSMSProps) => {
-  const { recipient, user, document, isCurrentlyAuthenticating, setIsCurrentlyAuthenticating } =
+  const { recipient, isCurrentlyAuthenticating, setIsCurrentlyAuthenticating } =
     useRequiredDocumentSigningAuthContext();
 
   const [step, setStep] = useState<'setup' | 'verify'>('setup');
@@ -223,13 +214,6 @@ export const DocumentSigningAuthSMS = ({
                 {recipient.email}
               </span>
             </div>
-
-            {document && (
-              <div className="flex items-center space-x-2">
-                <FileText className="h-4 w-4 text-gray-400" />
-                <span className="truncate">{document.title}</span>
-              </div>
-            )}
 
             <div className="mt-3 flex items-center space-x-2 border-t border-blue-200 pt-2 dark:border-blue-700">
               <CheckCircle className="h-4 w-4 text-green-500" />

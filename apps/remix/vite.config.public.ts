@@ -22,6 +22,17 @@ export default defineConfig({
     host: '0.0.0.0', // ← Permite acceso desde cualquier IP
     port: 3000,
     strictPort: true,
+    hmr: {
+      host: 'xubuntu-server.duckdns.org',
+      port: 3000,
+    },
+    origin: 'http://xubuntu-server.duckdns.org:3000',
+    cors: true, // ← Habilita CORS para acceso externo
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
   },
   plugins: [
     reactRouter(),

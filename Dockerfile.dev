@@ -1,0 +1,38 @@
+# Dockerfile para desarrollo con acceso desde internet
+FROM node:20-alpine
+
+# Instalar bash y otras dependencias necesarias
+RUN apk add --no-cache bash git docker-cli docker-cli-compose
+
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos de configuración
+COPY package.json package-lock.json ./
+COPY turbo.json ./
+COPY lingui.config.ts ./
+
+# Copiar packages y apps
+COPY packages/ ./packages/
+COPY apps/ ./apps/
+COPY scripts/ ./scripts/
+COPY docker/ ./docker/
+
+# Copiar archivos de configuración adicionales
+COPY .env.example .env
+COPY commitlint.config.cjs ./
+COPY lint-staged.config.cjs ./
+COPY prettier.config.cjs ./
+COPY tsconfig.eslint.json ./
+
+# Instalar dependencias
+RUN npm ci
+
+# Configurar permisos para los scripts
+RUN chmod +x apps/remix/.bin/build.sh 2>/dev/null || true
+
+# Exponer puertos
+EXPOSE 3000 9000 2500 1100 9002 9001 3030 54320 54321
+
+# Comando por defecto
+CMD ["npm", "run", "dev"]

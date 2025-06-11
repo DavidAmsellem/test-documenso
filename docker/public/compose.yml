@@ -1,0 +1,84 @@
+# Docker Compose para desarrollo público
+# Mismo setup que development pero con puertos expuestos públicamente
+name: documenso-development-public
+
+services:
+  database:
+    image: postgres:15
+    container_name: database-public
+    volumes:
+      - documenso_database_public:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U documenso']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=documenso
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=documenso
+    ports:
+      - 54322:5432
+
+  inbucket:
+    image: inbucket/inbucket
+    container_name: mailserver-public
+    ports:
+      - 9100:9000   # Web UI (puerto diferente)
+      - 2501:2500   # SMTP (puerto diferente)
+      - 1101:1100   # POP3 (puerto diferente)
+
+  minio:
+    image: minio/minio
+    container_name: minio-public
+    ports:
+      - 9102:9002   # API (puerto diferente)
+      - 9101:9001   # Console (puerto diferente)
+    volumes:
+      - minio_public:/data
+    environment:
+      MINIO_ROOT_USER: documenso
+      MINIO_ROOT_PASSWORD: password
+    entrypoint: sh
+    command: -c 'mkdir -p /data/documenso && minio server /data --console-address ":9001" --address ":9002"'
+
+  triggerdotdev:
+    image: ghcr.io/triggerdotdev/trigger.dev:latest
+    container_name: triggerdotdev-public
+    environment:
+      - LOGIN_ORIGIN=http://xubuntu-server.duckdns.org:3031
+      - APP_ORIGIN=http://xubuntu-server.duckdns.org:3031
+      - PORT=3030
+      - REMIX_APP_PORT=3030
+      - MAGIC_LINK_SECRET=secret
+      - SESSION_SECRET=secret
+      - ENCRYPTION_KEY=deadbeefcafefeed
+      - DATABASE_URL=postgresql://trigger:password@triggerdotdev_database_public:5432/trigger
+      - DIRECT_URL=postgresql://trigger:password@triggerdotdev_database_public:5432/trigger
+      - RUNTIME_PLATFORM=docker-compose
+    ports:
+      - 3031:3030   # Puerto diferente para evitar conflictos
+    depends_on:
+      - triggerdotdev_database
+
+  triggerdotdev_database:
+    container_name: triggerdotdev_database_public
+    image: postgres:15
+    volumes:
+      - triggerdotdev_database_public:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U trigger']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=trigger
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=trigger
+    ports:
+      - 54323:5432
+
+volumes:
+  minio_public:
+  documenso_database_public:
+  triggerdotdev_database_public:
